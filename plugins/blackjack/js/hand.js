@@ -69,14 +69,15 @@ Hand.prototype._revalidate = function() {
   // I love functioncal programming. The code does this:
   // It traverses all possibilities for when we take one value out of each card.values-Array.
   // It sums those values and collects them in this.totals if it's a unique total.
-
-  this.totals = this.cards.map(function(card) { return card.values; }).reduce(function(allTotals, values) {
+  
+  this.totals = this.cards.length == 0 ?
+    [] : this.cards.map(function(card) { return card.values; }).reduce(function(allTotals, values) {
     return values.reduce(function(partialTotals, value) {
       var newTotals = allTotals.map(function(total) { return total + value; });
       return partialTotals.concat(newTotals).uniq();
     }, []);
   });
-
+  
   this.validTotals = this.totals.filter(function(total) { return total <= 21; });
 
   // Set some flags.

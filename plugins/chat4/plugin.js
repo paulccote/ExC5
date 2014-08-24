@@ -1,6 +1,5 @@
-var input;
+var input, scrollToBottom = true;
 
-// TODO:2014-08-17:alex:Scroll on resize.
 // TODO:2014-08-17:alex:Themes
 // TODO:2014-08-17:alex:Better drag and drop support (sources, drag everywhere)
 // TODO:2014-08-17:alex:Favorite colors
@@ -10,13 +9,13 @@ var input;
 // TODO:2014-08-17:alex:The topic-input should support BB.
 // TODO:2014-08-17:alex:multi-lingual package.json
 // TODO:2014-08-17:alex:Profile updates aren't pushed to channels yet.
-// TODO:2014-08-17:alex:Scroll down when images load. Maybe keep an atBottom flag (update:onscroll), or something.
+// TODO:2014-08-17:alex:Scroll down when images load.
 // TODO:2014-08-17:alex:Fix line-height (for emoticons).
+// TODO:2014-08-24:alex:Support message-editing and chatlogs.
 
 window.addEventListener('load', function() {
   document.querySelector('#topic input').onkeydown = function(e) {
     if(e.keyCode != 13) return;
-    
     this.blur();
     ExAPI.data('topic', this.value);
   };
@@ -53,6 +52,15 @@ window.addEventListener('load', function() {
     
     e.preventDefault();
     return false;
+  });
+  
+  var messages = document.getElementById("messages");
+  messages.addEventListener('scroll', function() {
+    scrollToBottom = messages.scrollHeight - messages.scrollTop < $(messages).height() + 50;
+  });
+  
+  window.addEventListener('resize', function() {
+    if(scrollToBottom) messages.scrollTop = messages.scrollHeight;
   });
   
   function keyChange(evt) {
@@ -256,7 +264,7 @@ function convertMessage(original) {
   // m = m.replace(/#([^ ']+)/, "<a href=\"#\" onclick=\"ExAPI.join('$1');\" title=\"Join '$1'\">#$1</a>");
   
   m = m.replace(/([^"])http:\/\/([^ ]+)/ig, "$1<a target=\"blank\" href=\"http://$2\">http://$2</a>");
-  return m.replace(/([^\/])www.([^ ]+)/ig, "$1<a target=\"blank\" href=\"http://www.$2\">www.$2</a>").substring(1);
+  return m.replace(/([^\/])www\.([^ ]+)/ig, "$1<a target=\"blank\" href=\"http://www.$2\">www.$2</a>").substring(1);
 }
 
 var lastSender, lastMessage;
@@ -324,9 +332,8 @@ function addMessage(sender, dateText, messageText, nobr, participant) {
   }
   
   var messages = document.getElementById("messages");
-  var atBottom = messages.scrollHeight - messages.scrollTop < 50; // Should we scroll to the bottom?
   messages.insertBefore(message, document.querySelector('#typing'));
-  if(atBottom) messages.scrollTop = messages.scrollHeight;
+  if(scrollToBottom) messages.scrollTop = messages.scrollHeight;
   
   return content;
 }
@@ -350,7 +357,8 @@ function checkForEnter(e) {
     while(slidingWindow.length > 100) slidingWindow.shift();
   } lastKeyPress = time;
   
-  if(!localTyping) { // TODO: Only when a keyCode is supplied?
+  var isCharKey = e.keyCode >= 40 && e.keyCode <= 90;
+  if(!localTyping && isCharKey) {
     localTyping = true;
     ExAPI.udata(ExAPI.client.username, 'typing', true);
   }
