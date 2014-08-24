@@ -1,0 +1,95 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+body {
+  font: normal normal normal 12px/14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+div#users {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 16px;
+  padding: 2px 4px;
+  background: #515151;
+  color: #fff;
+  overflow: hidden;
+}
+
+div#users span.red {
+  color: red;
+}
+
+div#users span.yellow {
+  color: yellow;
+}
+
+div#status {
+  position: absolute;
+  top: 20px;
+  left: 0px;
+  right: 0px;
+  height: 16px;
+  padding: 2px 4px;
+  background: #515151;
+  color: #fff;
+  overflow: hidden;
+}
+
+div#game {
+  position: absolute;
+  top: 40px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+div#game div#grid {
+  margin: auto;
+  position: relative;
+  width: 520px;
+  height: 360px;
+  background: url(images/Background.png) no-repeat;
+}
+
+div#game div#grid div#foreground {
+  position: absolute;
+  z-index: 100;
+  width: 520px;
+  height: 360px;
+  background: url(images/Grid.png) no-repeat;
+}
+
+div.chip {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+}
+
+div.red.chip {
+  background-image: url(images/Red.png);
+}
+
+div.yellow.chip {
+  background-image: url(images/Yellow.png);
+}
+
+div.slot {
+  position: absolute;
+  z-index: 300;
+  width: 32px;
+  height: 360px;
+  cursor: s-resize;
+}
+
+input#rebox {
+  position: absolute;
+  top: 20px;
+  right: 5px;
+}

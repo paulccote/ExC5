@@ -1,0 +1,118 @@
+body {
+  font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  background: #165d3d url(../assets/felt.png);
+  background-size: 128px 128px;
+  color: white;
+  margin: 8px 8px 110px;
+}
+
+div.controls {
+  z-index: 100;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px 0;
+  text-align: center;
+  
+  -webkit-mask: -webkit-linear-gradient(bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
+  background: #165d3d url(../assets/felt.png);
+  background-size: 128px 128px;
+}
+
+div.controls input {
+  -webkit-transition: 0.2s ease all;
+  
+  border: none;
+  color: white;
+  font: inherit;
+  font-size: 1.3em;
+  background-color: rgba(255, 255, 255, .1);
+  border-radius: 3px;
+  border: 2px solid white;
+  height: 64px;
+  width: 128px;
+  margin: 4px;
+/*font-weight: 100;*/
+}
+
+div.controls input:disabled {
+  opacity: 0.5;
+}
+
+div.card {
+  display: inline-block;
+  width: 54px;
+  height: 76px;
+  margin: 1px;
+  -webkit-transition: 0.25s ease all;
+  -webkit-transform: scale(1, 1);
+  -webkit-transform-origin: 27px 0;
+}
+
+div.card-bg {
+  width: 54px;
+  height: 76px;
+  border-radius: 2px;
+  background-image: url(../assets/cards.png);
+  background-position: -1px -313px;
+  background-size: 727px 391px;
+  box-shadow: 0 0 1px black;
+}
+
+div.hand, div.scoreboard {
+  display: inline-block;
+  box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, .4), 0 0 1px rgba(255, 255, 255, .2), 0 1px rgba(255, 255, 255, .1);
+  padding: 10px;
+  border-radius: 3px;
+  height: 117px;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+div.hand {
+  margin: 8px 8px;
+  margin-bottom: 0;
+  background-color: rgba(255, 255, 255, 0);
+  -webkit-transition: 0.2s ease all;
+}
+
+div.hand.active {
+  background-color: rgba(255, 255, 255, .05);
+}
+
+div.hand {
+  width: calc(75% - 32px);
+}
+
+div.scoreboard {
+  margin: 8px 8px;
+  display: inline-block;
+  width: 25%;
+  background-color: rgba(0, 0, 0, .5);
+}
+
+div.hand.user {
+  box-sizing: border-box;
+  width: calc(50% - 16px);
+}
+
+div.hand div.cards {
+  margin-top: 6px;
+  width: 100%;
+  height: 76px;
+}
+
+div.hand div.card {
+  width: 10px;
+}
+
+div.hand span.username {
+  font-weight: bold;
+}
+
+div.hand span.total {
+  margin-left: 5px;
+}

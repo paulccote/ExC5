@@ -1,0 +1,25 @@
+{
+  "name"          : "Blackjack",
+  "version"       : "0.0.1",
+  "description"   : "You can use this plugin to play blackjack.",
+  "author"        : "Alexander Rath",
+  "icon"          : "package/icon.png",
+  "notifications" : {
+    "start" : {
+      "name"        : "Game started",
+      "description" : "Fired when the game has started",
+      "audio"       : "http://cappucci.noip.me/notify.wav",
+      "visual"      : "Blackjack has started!",
+      "properties"  : [ 'channel' ],
+      "badge"       : true
+    },
+    "your-turn" : {
+      "name"        : "It's your turn",
+      "description" : "Fired when it's your turn",
+      "audio"       : "http://cappucci.noip.me/notify.wav",
+      "visual"      : "It's your turn",
+      "properties"  : [ 'channel', 'username', 'nickname' ],
+      "badge"       : true
+    }
+  }
+}

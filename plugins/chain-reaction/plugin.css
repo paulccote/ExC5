@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+body {
+  font: normal normal normal 12px/14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+div#users {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 16px;
+  padding: 2px 4px;
+  background: #515151;
+  color: #fff;
+  overflow: hidden;
+}
+
+div#users span.red { color: red; }
+div#users span.blue { color: blue; }
+div#users span.green { color: green; }
+div#users span.orange { color: orange; }
+
+div#status {
+  position: absolute;
+  top: 20px;
+  left: 0px;
+  right: 0px;
+  height: 16px;
+  padding: 2px 4px;
+  background: #515151;
+  color: #fff;
+  overflow: hidden;
+}
+
+div#game {
+  position: absolute;
+  top: 40px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+div.field {
+  display: inline-block;
+  width: 10%;
+  height: 10%;
+  text-align: center;
+  line-height: 27px;
+  font-size: 16px;
+  background: #ededed;
+}
+
+div.field:hover {
+  background: #f6f6f6;
+}
+
+div.bomb {
+  position: absolute;
+  background: green;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+}
+
+div.green.bomb { background: green; }
+div.orange.bomb { background: orange; }
+div.red.bomb { background: red; }
+div.blue.bomb { background: blue; }

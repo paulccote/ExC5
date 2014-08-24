@@ -1,0 +1,41 @@
+{
+  "name"          : "Chat v4",
+  "version"       : "0.1.5",
+  "description"   : "You can use this plugin to chat.",
+  "author"        : "Alexander Rath",
+  "icon"          : "package/icon.png",
+  "notifications" : {
+    "join" : {
+      "name"        : "User joins",
+      "description" : "Fired when a user has joined the channel",
+      "audio"       : "http://cappucci.noip.me/notify.wav",
+      "visual"      : "{{username}} has joined",
+      "properties"  : [ 'username', 'nickname', 'channel', 'time', 'usercount' ], // TODO: Hash with descriptions?
+      "badge"       : false
+    },
+    "leave" : {
+      "name"        : "User leaves",
+      "description" : "Fired when a user has left the channel",
+      "audio"       : false,
+      "visual"      : "{{username}} has left",
+      "properties"  : [ 'username', 'nickname', 'channel', 'time', 'usercount' ],
+      "badge"       : false
+    },
+    "message" : {
+      "name"        : "Message received",
+      "description" : "Fired when a message has been received",
+      "audio"       : "http://cappucci.noip.me/notify.wav",
+      "visual"      : false,
+      "properties"  : [ 'username', 'nickname', 'channel', 'time', 'usercount', 'message', 'message-length' ],
+      "badge"       : true
+    },
+    "mention" : {
+      "name"        : "Keyword mentioned",
+      "description" : "Fired when one of your predefined keywords (e.G. your name) has been mentioned in a message.",
+      "audio"       : "http://cappucci.noip.me/notify.wav",
+      "visual"      : "{{username}} mentioned {{keyword}}",
+      "properties"  : [ 'username', 'nickname', 'channel', 'time', 'usercount', 'message', 'message-length', 'keyword' ],
+      "badge"       : true
+    }
+  }
+}
