@@ -1,6 +1,7 @@
-function Hand(id, online) {
+function Hand(id, host) {
   this.id = id;
-  this.online = online;
+  this.host = host;
+  this.online = host !== undefined;
 
   this.element = document.createElement('div');
   this.element.className = id == 'Dealer' ? 'hand' : 'user hand';
@@ -25,7 +26,7 @@ function Hand(id, online) {
   this.isUnknown   = false;
   this.isOver      = false;
 
-  if(!online) document.body.appendChild(this.element);
+  if(!this.online) document.body.appendChild(this.element);
 }
 
 Hand.prototype._updateUsername = function() {
@@ -34,6 +35,11 @@ Hand.prototype._updateUsername = function() {
 };
 
 Hand.prototype.clear = function() {
+  if(this.online) {
+    var hand = this;
+    this.cards.forEach(function(card) { hand.host.deck.return(card); });
+  }
+  
   this.totalElement.textContent = '0';
   
   var hand = this;
@@ -111,4 +117,15 @@ Hand.prototype.can = function(action) {
     case ACTION_SURRENDER : return this.cards.length == 2;
     default: return false; // You want me to... what?
   }
+};
+
+Hand.prototype.serialize = function() {
+  return this.cards.map(function(card) { return card.serialize(); });
+};
+
+Hand.deserialize = function(id, cards) {
+  var hand = new Hand(id);
+  hand.cards = cards.map(function(card) { return Card.deserialize(card); });
+  hand._revalidate();
+  return hand;
 };

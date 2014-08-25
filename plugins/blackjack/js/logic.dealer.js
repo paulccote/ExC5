@@ -1,5 +1,7 @@
-var prototype = (Logic.Dealer = function() {
-  this.hand = new Hand('dealer', true);
+var prototype = (Logic.Dealer = function(host) {
+  this.id = 'bj:dealer';
+  this.host = host;
+  this.hand = new Hand(this.id, host);
 }).prototype;
 
 prototype.ask = function(id, cb) {

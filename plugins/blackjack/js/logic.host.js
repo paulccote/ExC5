@@ -1,17 +1,13 @@
-const HSTATE_PAUSED      = 'paused';
-const HSTATE_TAKING_BETS = 'taking_bets';
-const HSTATE_DEALING     = 'dealing';
-const HSTATE_WAITING     = 'waiting'; // Waiting for player actions.
-const HSTATE_IDLE        = 'idle'; // Waiting for players to join.
-
 var prototype = (Logic.Host = function() {
   this.deck = new Deck(6);
   
   this.userHash = new Object(); // For id lookups.
   
   this.users = new Array();
-  this.dealer = new Logic.Dealer();
+  this.dealer = new Logic.Dealer(this);
   this.state = { id: HSTATE_PAUSED };
+  
+  ExAPI.data('state', this.state); // TODO:2014-08-25:alex:Shouldn't we clone data inside ExAPI.data and ExAPI.udata? Data mismatch.
   
   this.isStarted = false;
 }).prototype;
@@ -28,14 +24,19 @@ prototype.start = function() {
 };
 
 prototype._askBets = function() {
-  if(this.users.length == 0) // No users yet? No need to do any logic.
-    return this.state = { id: HSTATE_IDLE };
+  if(this.users.length == 0) { // No users yet? No need to do any logic.
+    this.state = { id: HSTATE_IDLE };
+    ExAPI.data('state', this.state);
+    return;
+  }
   
   this.state = {
     id: HSTATE_TAKING_BETS,
     users: [].concat(this.users), // We want to clone this so we can use .remove()
     players: [].concat(this.users) // Only the current users.
   };
+  
+  ExAPI.data('state', { id:this.state.id });
   
   var host = this;
   var tout = setTimeout(function() {
@@ -69,6 +70,8 @@ prototype._dealCards = function() {
     players : this.state.players
   };
   
+  ExAPI.data('state', { id:this.state.id });
+  
   var host = this;
   var interval = setInterval(function() {
     hand = host.state.hands.shift();
@@ -92,6 +95,7 @@ prototype._askActions = function() {
   this.state.turns = turns;
   delete this.state.hands;
   
+  ExAPI.data('state', { id:this.state.id });
   this._askNextAction();
 };
 
@@ -113,6 +117,8 @@ prototype._askNextAction = function() {
       ExAPI.push({ cmd:'flip', data: { id:b.id, type:b.type, offset:b.offset } });
     }
   }
+  
+  ExAPI.data('state.player', player.id);
   
   var host = this;
   player.ask('action', function(action) {
@@ -166,34 +172,39 @@ prototype._clear = function() {
   ExAPI.push({ cmd:'clear' });
   
   var host = this;
-  this.state.players.concat([ this.dealer ]).forEach(function(player) {
-    player.hand.cards.forEach(function(card) { host.deck.return(card); });
-    player.hand.clear(); // TODO:2014-08-23:alex:In the network version, this should return the cards.
-  });
+  this.state.players.concat([ this.dealer ]).forEach(function(player) { player.hand.clear(); });
   
   this._askBets();
 };
 
+prototype.getSummary = function() { // Summarize all hands in a hash.
+  return this.state.players.map(function(user) { return user.hand; }).concat([ this.dealer.hand ]).reduce(function(h,hand) {
+    h[hand.id] = hand.serialize();
+  }, {});
+};
+
 //
 
-var prototype = (Logic.Host.NetworkUser = function(id) {
+var prototype = (Logic.Host.NetworkUser = function(id, host) {
   ExAPI.push({ cmd:'joined', data:id });
   
-  this.id = id;
-  this.hand = new Hand('user:' + this.id, true);
+  this.id = 'user:' + id;
+  this.host = host;
+  this.hand = new Hand(this.id, host);
+  this.username = id;
   
   var user = this;
   var keys = [ 'wealth', 'bet' ];
   keys.forEach(function(key) {
-    user.__defineGetter__(key, function()  { return ExAPI.udata(user.id, 'state.' + key   ); });
-    user.__defineSetter__(key, function(v) {        ExAPI.udata(user.id, 'state.' + key, v); });
+    user.__defineGetter__(key, function()  { return ExAPI.udata(user.username, 'state.' + key   ); });
+    user.__defineSetter__(key, function(v) {        ExAPI.udata(user.username, 'state.' + key, v); });
   });
   
   this.callbacks = {}; // TODO:2014-08-23:alex:Timeouts. Implement them here.
 }).prototype;
 
 prototype.ask = function(id, cb) {
-  ExAPI.push({ cmd:'ask', data:id, to:[ this.id ] });
+  ExAPI.push({ cmd:'ask', data:id, to:[ this.username ] });
   this.callbacks[id] = cb;
 };
 

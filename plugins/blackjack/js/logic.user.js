@@ -3,7 +3,7 @@ var prototype = (Logic.User = function(username) {
   this.bet = 100;
   
   this.username = username;
-  this.hand = new Hand(username, this);
+//this.hand = new Hand(username);
   
   var user = this;
   
@@ -31,7 +31,7 @@ var prototype = (Logic.User = function(username) {
   
   document.body.appendChild(this.controls);
   
-  this._enableControls(false);
+//this._enableControls(false);
   this._actionCallback = false;
 }).prototype;
 
