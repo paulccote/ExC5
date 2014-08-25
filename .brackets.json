@@ -50,6 +50,10 @@
         "/Users/alex/nw-sample-apps/ExC4/node_modules/socket.io/node_modules/socket.io-client/node_modules/engine.io-client/node_modules/xmlhttprequest/tests/test-request-methods.js",
         "/Users/alex/nw-sample-apps/ExC4/node_modules/socket.io/node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/utf8/utf8.js",
         "/Users/alex/nw-sample-apps/ExC4/node_modules/socket.io/node_modules/socket.io-client/node_modules/object-component/index.js",
-        "/Users/alex/nw-sample-apps/ExC4/node_modules/socket.io/node_modules/socket.io-client/node_modules/engine.io-client/node_modules/xmlhttprequest/tests/test-request-protocols.js"
+        "/Users/alex/nw-sample-apps/ExC4/node_modules/socket.io/node_modules/socket.io-client/node_modules/engine.io-client/node_modules/xmlhttprequest/tests/test-request-protocols.js",
+        "/Users/alex/nw-sample-apps/ExC4/node_modules/socket.io/node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/arraybuffer.slice/index.js",
+        "/Users/alex/nw-sample-apps/ExC4/node_modules/socket.io/node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/arraybuffer.slice/test/slice-buffer.js",
+        "/Users/alex/nw-sample-apps/ExC4/node_modules/socket.io/node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/base64-arraybuffer/grunt.js",
+        "/Users/alex/nw-sample-apps/ExC4/node_modules/socket.io/node_modules/socket.io-client/node_modules/engine.io-client/node_modules/engine.io-parser/node_modules/base64-arraybuffer/lib/base64-arraybuffer.js"
     ]
 }

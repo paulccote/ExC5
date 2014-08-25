@@ -46,3 +46,5 @@ db/
 p2p-draft.js
 agen.html
 cake.html
+.brackets.json
+package.json
