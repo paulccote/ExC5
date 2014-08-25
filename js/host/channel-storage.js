@@ -18,7 +18,7 @@ prototype.read = function(session, key) {
   
   // TODO:2014-08-17:alex:Get role, role for server reads?
   
-  if(!this.channel[this.gridKey].hasOwnProperty(path[0])) throw 'The grid does not contain this key.';
+  if(!this.channel[this.gridKey].hasOwnProperty(rootKey)) throw 'The grid does not contain this key.';
   
   var record = this.records[rootKey] || { value:null };
   var obj = record.value;
@@ -30,6 +30,7 @@ prototype.read = function(session, key) {
 
 // Used for reading a property without error-reporting.
 prototype.tryRead = function(session, key, fallback) {
+  console.log(this.read(session, key));
   try {
     return this.read(session, key);
   } catch(e) {
@@ -46,7 +47,7 @@ prototype.write = function(session, key, value, owner) {
   var rootKey = path.shift();
   
   path = [ 'value' ].concat(path); // We need one item, at least.
-  var root = this.records[rootKey] || (this.records[rootKey] = { value:null });
+  var root = this.records[rootKey] || (this.records[rootKey] = {});
   while(path.length > 1) root = (root.hasOwnProperty(path[0]) ? root[path.shift()] : root[path.shift()] = {});
   root[path.shift()] = value;
   

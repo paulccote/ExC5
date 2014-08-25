@@ -124,7 +124,7 @@ var ExAPI = new (function() {
     // Find the member we should update.
     
     path = [ 'value' ].concat(path); // We want one item, at least.
-    var root = data.hasOwnProperty(rootKey) ? data[rootKey] : data[rootKey] = { value:null };
+    var root = data.hasOwnProperty(rootKey) ? data[rootKey] : data[rootKey] = {};
     while(path.length > 1) root = (root.hasOwnProperty(path[0]) ? root[path.shift()] : root[path.shift()] = {});
     root[path.shift()] = newRecord.value;
     
