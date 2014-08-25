@@ -36,19 +36,24 @@ prototype._askBets = function() {
     players: [].concat(this.users) // Only the current users.
   };
   
-  ExAPI.data('state', { id:this.state.id });
+  var timeout = 8000;
+  ExAPI.data('state', { id:this.state.id, timeout:timeout });
   
   var host = this;
   var tout = setTimeout(function() {
     host._dealCards();
-  }, 4000);
+  }, timeout);
   
+  this.users.forEach(function(user) { user.bet = 0; }); // Reset bets to zero.
   this.users.forEach(function(user) {
-    user.ask('bet', function(bet) { // TODO: On pass, remove player from host.state.players
+    user.ask('bet', function(bet) {
       if(host.state.id != HSTATE_TAKING_BETS)
         return; // TODO:2014-08-23:alex:Let the user know we're not taking bets anymore.
       
-      user.bet = bet; // TODO:2014-08-23:alex:Verify the bet?
+      if(bet < 0) return; // This one's so old. Sorry, but this won't work.
+      if(bet > user.wealth) return; // Yeah, this isn't legit either.
+      
+      user.bet = bet;
       user.wealth -= bet;
       host.state.users.remove(user);
       
@@ -61,6 +66,14 @@ prototype._askBets = function() {
 };
 
 prototype._dealCards = function() {
+  this.state.players = this.state.players.filter(function(user) { return user.bet > 0; });
+  
+  if(this.state.players.length == 0) {
+    // No bets were given. Let's ask again.
+    this._askBets();
+    return;
+  }
+  
   var hands = this.state.players.map(function(user) { return user.hand; }).concat([ this.dealer.hand ]);
   hands = hands.concat(hands); // Deal everybody two cards.
   
@@ -128,6 +141,8 @@ prototype._askNextAction = function() {
       case ACTION_STAND   : host.state.turns.remove(player); break;
       case ACTION_HIT     : player.hand.addCard(host.deck.shift()); break;
       case ACTION_DOUBLE  :
+        if(player.wealth < player.bet) return host._askNextAction(); // Can't double, not enough chips.
+          
         player.wealth -= player.bet;
         player.bet *= 2;
         
@@ -159,8 +174,8 @@ prototype._solve = function() {
     host.state.players.forEach(function(player) {
       if(player.hand.isOver) return; // Over!
       if(player.hand.isBlackjack && !host.dealer.hand.isBlackjack) return player.wealth += player.bet * 2.5; // Blackjack pays 3:2
-      if(player.hand.total == host.dealer.hand.total) player.wealth += player.bet;
-      else if(host.dealer.hand.isOver || player.hand.total > host.dealer.hand.total) player.wealth += player.bet * 2;
+      if(player.hand.total == host.dealer.hand.total) player.wealth += player.bet; // Tie.
+      else if(host.dealer.hand.isOver || player.hand.total > host.dealer.hand.total) player.wealth += player.bet * 2; // Win.
       else; // Lose.
     });
     
@@ -196,9 +211,15 @@ var prototype = (Logic.Host.NetworkUser = function(id, host) {
   
   var user = this;
   var keys = [ 'wealth', 'bet' ];
+  var cache = {};
   keys.forEach(function(key) {
-    user.__defineGetter__(key, function()  { return ExAPI.udata(user.username, 'state.' + key   ); });
-    user.__defineSetter__(key, function(v) {        ExAPI.udata(user.username, 'state.' + key, v); });
+    user.__defineGetter__(key, function()  {
+      return cache.hasOwnProperty(key) ? cache[key] : ExAPI.udata(user.username, 'state.' + key);
+    });
+    user.__defineSetter__(key, function(v) {
+      cache[key] = v;
+      ExAPI.udata(user.username, 'state.' + key, v);
+    });
   });
   
   this.callbacks = {}; // TODO:2014-08-23:alex:Timeouts. Implement them here.

@@ -26,6 +26,8 @@ div.controls {
 div.controls input {
   -webkit-transition: 0.2s ease all;
   
+  text-align: center;
+  outline: none;
   border: none;
   color: white;
   font: inherit;
@@ -71,6 +73,15 @@ div.hand, div.scoreboard {
   height: 117px;
   box-sizing: border-box;
   vertical-align: top;
+}
+
+div.scoreboard table {
+  font: inherit;
+  width: 100%;
+}
+
+div.scoreboard tr td {
+  width: 33%;
 }
 
 div.hand {

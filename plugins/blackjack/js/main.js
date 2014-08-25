@@ -111,10 +111,27 @@ window.addEventListener('load', function() {
       return ExAPI.udata(name, 'state.playing');
     });
     
-    scoreboard.textContent = '';
+    scoreboard.innerHTML = '';
+    
+    var table = document.createElement('table');
+    scoreboard.appendChild(table);
+    
     Object.forEach(players, function(p, name) {
-      scoreboard.appendChild(document.createTextNode(name + ': ' + ExAPI.udata(name, 'state.wealth')));
-      scoreboard.appendChild(document.createElement('br'));
+      var tr = document.createElement('tr');
+      function td(content) {
+        var td = document.createElement('td');
+        td.textContent = content;
+        tr.appendChild(td);
+      }
+      
+      var bet = ExAPI.udata(name, 'state.bet');
+      if(bet == undefined || bet == 0) bet = '-';
+      
+      td(name);
+      td(ExAPI.udata(name, 'state.wealth'));
+      td(bet);
+      
+      table.appendChild(tr);
     });
   });
   
@@ -147,7 +164,8 @@ window.addEventListener('load', function() {
     
     userLogic = new Logic.User(ExAPI.client.username);
     hands['bj:dealer'] = new Hand('bj:dealer');
-
+    
+    // TODO:2014-08-25:alex:We need graphs for the scores.
     ExAPI.onPush('welcome', function(data) {
       // hands = Object.map(data, function(hand, id) { return Hand.deserialize(id, hand); }); // Work on this later...
     });
