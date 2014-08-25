@@ -263,7 +263,7 @@ function convertMessage(original) {
   
   // m = m.replace(/#([^ ']+)/, "<a href=\"#\" onclick=\"ExAPI.join('$1');\" title=\"Join '$1'\">#$1</a>");
   
-  m = m.replace(/([^"])http:\/\/([^ ]+)/ig, "$1<a target=\"blank\" href=\"http://$2\">http://$2</a>");
+  m = m.replace(/([^"])http(s?):\/\/([^ ]+)/ig, "$1<a target=\"blank\" href=\"http$2://$3\">http$2://$3</a>");
   return m.replace(/([^\/])www\.([^ ]+)/ig, "$1<a target=\"blank\" href=\"http://www.$2\">www.$2</a>").substring(1);
 }
 
