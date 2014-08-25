@@ -11,7 +11,7 @@ const HSTATE_DEALING     = 'dealing';
 const HSTATE_WAITING     = 'waiting'; // Waiting for player actions.
 const HSTATE_IDLE        = 'idle'; // Waiting for players to join.
 
-var hostLogic, userLogic;
+var hostLogic, userLogic, hands = {};
 window.addEventListener('load', function() {
   ExAPI.init();
   
@@ -146,12 +146,10 @@ window.addEventListener('load', function() {
     ExAPI.emitData('state.player');
     
     userLogic = new Logic.User(ExAPI.client.username);
-
-    hands = {};
     hands['bj:dealer'] = new Hand('bj:dealer');
 
     ExAPI.onPush('welcome', function(data) {
-      hands = Object.map(data, function(hand, id) { return Hand.deserialize(id, hand); });
+      // hands = Object.map(data, function(hand, id) { return Hand.deserialize(id, hand); }); // Work on this later...
     });
   });
 });

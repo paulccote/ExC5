@@ -178,8 +178,9 @@ prototype._clear = function() {
 };
 
 prototype.getSummary = function() { // Summarize all hands in a hash.
-  return this.state.players.map(function(user) { return user.hand; }).concat([ this.dealer.hand ]).reduce(function(h,hand) {
+  return this.state.players.map(function(user) { return user.hand; }).concat([ this.dealer.hand ]).reduce(function(h, hand) {
     h[hand.id] = hand.serialize();
+    return h;
   }, {});
 };
 
