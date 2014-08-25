@@ -5,7 +5,7 @@
   "main"        : "index.html",
   //"js-flags"    : "--use-strict --harmony", // Hooray.
   "window"      : {
-    "toolbar"   : false,
+    "toolbar"   : true,
     "width"     : 660,
     "height"    : 420
   //"resizable" : false
