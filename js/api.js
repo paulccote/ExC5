@@ -1,39 +1,52 @@
 var ExAPI = new (function() {
-  var events = {};
-  var pushEvents = {};
+  this.client   = {};
+  this.channel  = {};
+  this.isDirty  = false;
+  this.hasFocus = true; // The channel just got opened, should have focus.
   
-  this.client = {};
-  this.channel = {};
-  this.isDirty = false;
-  this.hasFocus = true; // TODO: Assuming this.
+  //
+  // EventEmitter
+  //
   
-  this.on = function(e, cb) {
-    if(!events.hasOwnProperty(e)) events[e] = [];
-    events[e].push(cb);
+  this._events  = {};
+  
+  this._on = function(type, subType, callback, context) {
+    var e = this._events[type] || (this._events[type] = {});
+    e = e[subType] || (e[subType] = []);
+    e.push([ callback, context ]);
   };
   
-  this.onPush = function(e, cb) { // TODO:2014-08-23:alex:This is not really DRY.
-    if(!pushEvents.hasOwnProperty(e)) pushEvents[e] = [];
-    pushEvents[e].push(cb);
+  this._emit = function(type, subType, args) {
+    var e = this._events[type] || (this._events[type] = {});
+    (e[subType] || (e[subType] = [])).forEach(function(cb) {
+      cb[0].apply(cb[1], args);
+    });
   };
   
-  this._emit = function(e, arg) {
-    if(!events.hasOwnProperty(e)) events[e] = [];
-    for(var i = 0; i < events[e].length; ++i) events[e][i](arg);
+  var api = this;
+  [ 'on', 'onPush', 'onData', 'onUData' ].forEach(function(type) {
+    api[type] = function(subType, callback, context) { return api._on(type, subType, callback, context); };
+  })
+  
+  // Used to fire the listeners for onData, for example when a room was joined and the data was set in 'init',
+  // but the callbacks need to update.
+  this.emitData = function(key) {
+    var rootKey = key.split('.')[0];
+    var record = ExAPI.channel.data[rootKey] || { value:null };
+    
+    // If the key is a path, we need to traverse the other part keys using ExAPI.data(key)
+    if(key != rootKey) record = Object.merge(record, { value:ExAPI.data(key) });
+    
+    this._emit('onData', key, [ record.value, record, { record:record, key:key, automated:true } ]);
   };
   
-  this._emitPush = function(e, a, b, c) {
-    if(!pushEvents.hasOwnProperty(e)) pushEvents[e] = [];
-    for(var i = 0; i < pushEvents[e].length; ++i) pushEvents[e][i](a, b, c);
-  };
-  
-  this.blink = function() {
-    return 182;
-  };
+  //
+  // Communication with the client
+  //
   
   this.send = function(obj) {
     var out = JSON.stringify(obj);
-    console.log('out: ' + out);
+    console.log('out: ' + out); // For debug.
     window.opener.postMessage(out, '*');
   };
   
@@ -41,16 +54,23 @@ var ExAPI = new (function() {
     this.send({ cmd:'channel', data:obj });
   };
   
+  //
   // Methods to configure a channel as host
+  //
   
   this.options = function(o)   { this.sendChannel({ cmd:'options', options:o }); };
   this.grid    = function(k,g) { this.sendChannel({ cmd:'grid', gridKey:k, grid:g }); };
   
-  // Stuff.
+  //
+  // API methods
+  //
   
-  this.push = function(obj) { this.sendChannel({ cmd:'push', data:obj }); };
+  this.blink = function() { return 182; }; // TODO:2014-08-25:alex:Why is this here?
+  this.push  = function(obj) { this.sendChannel({ cmd:'push', data:obj }); };
   
-  // Accessing DataStores
+  //
+  // DataStore API methods
+  //
   
   function _readDataPath(data, key) {
     var path = key.split('.');
@@ -72,7 +92,9 @@ var ExAPI = new (function() {
     this.sendChannel({ cmd:'udata', username:u, key:k, value:v });
   };
   
-  // API stuff
+  //
+  // Client API methods
+  //
   
   // TODO:2014-08-24:alex:Invite API. "Do you want to play Chess?" - type of plugin in package.json? Invites without channels?
   
@@ -91,7 +113,9 @@ var ExAPI = new (function() {
     this.send({ cmd:'flush' }); // TODO: wtf? retarded.
   };
   
-  // Core-Listener
+  //
+  // Listening for client messages
+  //
   
   function _writeDataPath(data, key, newRecord) { // TODO:2014-08-24:alex:Make this DRY with channel-storage.js for js/host
     var path = key.split('.');
@@ -112,23 +136,48 @@ var ExAPI = new (function() {
   
   window.addEventListener('message', function(e) {
     var obj = JSON.parse(e.data);
-    console.log('in: ' + e.data);
+    console.log('in: ' + e.data); // For debug.
     
     switch(obj.cmd) {
-      case 'init': {
+      case 'init':
+        // Sent by the host, contains information like ExAPI.client.username, ExAPI.channel.participants, ExAPI.channel.data, etc.
+        // We clone everything that's inside the 'obj'-hash to ExAPI (except for obj.cmd)
+        
         for(var k in obj) if(obj.hasOwnProperty(k) && k != 'cmd') ExAPI[k] = obj[k];
-        if(ExAPI.channel.options.configured) ExAPI._emit('ready');
-      }; break;
-      case 'data'    : _writeDataPath(ExAPI.channel.data, obj.key, obj.record); break;
-      case 'udata'   : _writeDataPath(ExAPI.channel.participants[obj.owner].data, obj.key, obj.record); break;
-      case 'join'    : ExAPI.channel.participants[obj.username] = obj; break;
-      case 'options' : ExAPI._emit('ready'); break;
-      case 'focus'   : ExAPI.hasFocus = obj.focus; break;
-      case 'leave'   : delete ExAPI.channel.participants[obj.username]; break;
-      case 'grid'    : ExAPI.channel[obj.gridKey] = obj.grid; break;
-      case 'push'    : ExAPI._emitPush(obj.data.cmd, obj.data.data, obj.username, obj.data);
+        if(ExAPI.channel.options.configured) ExAPI._emit('on', 'ready', []); // Emit on('ready') if this channel is already configured
+        break;
+      case 'push':
+        // A message was pushed to this channel.
+        ExAPI._emit('onPush', obj.data.cmd, [ obj.data.data, obj.username, obj.data ]);
+        break;
+      case 'data':
+        // A data-element in ExAPI.channel.data has changed.
+        _writeDataPath(ExAPI.channel.data, obj.key, obj.record);
+        ExAPI._emit('onData', obj.key, [ obj.record.value, obj.record, obj ]);
+        break;
+      case 'udata':
+        // A data-element of one of our participants has changed.
+        _writeDataPath(ExAPI.channel.participants[obj.owner].data, obj.key, obj.record);
+        ExAPI._emit('onUData', obj.key, [ obj.record.value, obj.owner, obj.record, obj ]);
+        break;
+      case 'grid':
+        // The layout for either channelGrid or userGrid has changed.
+        ExAPI.channel[obj.gridKey] = obj.grid;
+        break;
+      case 'options':
+        // This channel has been (re-)configured.
+        // Emit on('ready') if this channel is configured the first time.
+        
+        var configuredBefore = ExAPI.channel.options.configured;
+        ExAPI.channel.options = obj.options;
+        if(!configuredBefore) ExAPI._emit('on', 'ready', []);
+        break;
+      case 'join'  : ExAPI.channel.participants[obj.username] = obj; break; // A user joined the channel.
+      case 'leave' : delete ExAPI.channel.participants[obj.username]; break; // A user left the channel.
+      case 'focus' : ExAPI.hasFocus = obj.focus; break; // The plugin window received or lost focus.
     }
     
-    ExAPI._emit(obj.cmd, obj);
+    // Forward this to our 'on'-subscribers.
+    ExAPI._emit('on', obj.cmd, [ obj ]);
   });
 })();
