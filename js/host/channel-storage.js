@@ -30,7 +30,6 @@ prototype.read = function(session, key) {
 
 // Used for reading a property without error-reporting.
 prototype.tryRead = function(session, key, fallback) {
-  console.log(this.read(session, key));
   try {
     return this.read(session, key);
   } catch(e) {
