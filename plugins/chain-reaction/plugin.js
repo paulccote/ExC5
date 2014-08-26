@@ -35,7 +35,7 @@ var WIDTH = 10;
 var HEIGHT = 10;
 
 var game;
-function init() {
+window.addEventListener('load', function() {
   statusDiv = document.getElementById("status");
   
   game = document.getElementById("game");
@@ -108,6 +108,7 @@ function init() {
     
     pid = userCount;
     ExAPI.data('player' + userCount, ExAPI.client.username);
+    alert(ExAPI.channel.data.count.value);
     if(userCount == (ExAPI.channel.data.count || {}).value) ExAPI.data('started', true);
     
     updateUsers();
@@ -120,7 +121,7 @@ function init() {
   
   ExAPI.on("data", function(evt) {
     switch(evt.key) {
-      case "started": started = evt.value; statusDiv.innerHTML = turnString(); break;
+      case "started": started = evt.record.value; statusDiv.innerHTML = turnString(); break;
       default: if(!started) statusDiv.innerHTML = "Waiting for player " + (Object.count(ExAPI.channel.participants) + 1);
     } updateUsers();
   });
@@ -142,13 +143,13 @@ function init() {
       
       updateField(x, y, o);
       
-      turn = o == (ExAPI.channel.data.count || {}).value ? 1 : turn + 1;
+      turn = o == (ExAPI.channel.data.count || {}).value ? 1 : turn + 1;
       statusDiv.innerHTML = turnString();
     } else if(type == "ready") {
       oActive = false;
     }
   });
-}
+});
 
 function turnString() {
   if(pid) { // We are a player
