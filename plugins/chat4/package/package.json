@@ -10,7 +10,7 @@
       "description" : "Fired when a user has joined the channel",
       "audio"       : "http://cappucci.noip.me/notify.wav",
       "visual"      : "{{username}} has joined",
-      "properties"  : [ 'username', 'nickname', 'channel', 'time', 'usercount' ], // TODO: Hash with descriptions?
+      "properties"  : [ "username", "nickname", "channel", "time", "usercount" ],
       "badge"       : false
     },
     "leave" : {
@@ -18,7 +18,7 @@
       "description" : "Fired when a user has left the channel",
       "audio"       : false,
       "visual"      : "{{username}} has left",
-      "properties"  : [ 'username', 'nickname', 'channel', 'time', 'usercount' ],
+      "properties"  : [ "username", "nickname", "channel", "time", "usercount" ],
       "badge"       : false
     },
     "message" : {
@@ -26,7 +26,7 @@
       "description" : "Fired when a message has been received",
       "audio"       : "http://cappucci.noip.me/notify.wav",
       "visual"      : false,
-      "properties"  : [ 'username', 'nickname', 'channel', 'time', 'usercount', 'message', 'message-length' ],
+      "properties"  : [ "username", "nickname", "channel", "time", "usercount", "message", "message-length" ],
       "badge"       : true
     },
     "mention" : {
@@ -34,7 +34,7 @@
       "description" : "Fired when one of your predefined keywords (e.G. your name) has been mentioned in a message.",
       "audio"       : "http://cappucci.noip.me/notify.wav",
       "visual"      : "{{username}} mentioned {{keyword}}",
-      "properties"  : [ 'username', 'nickname', 'channel', 'time', 'usercount', 'message', 'message-length', 'keyword' ],
+      "properties"  : [ "username", "nickname", "channel", "time", "usercount", "message", "message-length", "keyword" ],
       "badge"       : true
     }
   }
