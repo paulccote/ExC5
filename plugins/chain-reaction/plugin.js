@@ -108,7 +108,6 @@ window.addEventListener('load', function() {
     
     pid = userCount;
     ExAPI.data('player' + userCount, ExAPI.client.username);
-    alert(ExAPI.channel.data.count.value);
     if(userCount == (ExAPI.channel.data.count || {}).value) ExAPI.data('started', true);
     
     updateUsers();
