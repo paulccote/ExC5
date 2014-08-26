@@ -68,7 +68,9 @@
         viewModel.errors = ko.validation.group(viewModel);
         ko.applyBindings(viewModel);
         
-        //showPluginAlert('plugins/chat4');
+        $('#plugin_alert img.icon').load(function() {
+          $(this).show(); // TODO:2014-08-25:alex:This should be in a class together with showPluginAlert.
+        });
         
         var pendingUId = null;
         $('#trust_btn').click(function() {
@@ -246,8 +248,10 @@
         $('#plugin_alert').addClass('loading');
         $('#plugin_alert').dialog({ title:'Plugin trust', width:400, modal:true });
         
-        $.getJSON(plugin + '/package.json', function(d) {
+        $.getJSON(plugin + '/package/package.json', function(d) {
           $('#plugin_alert img.icon')[0].src = plugin + '/' + d.icon;
+          $('#plugin_alert img.icon').hide();
+          
           $('#plugin_alert span.title').text(d.name);
           $('#plugin_alert span.author').text('by ' + d.author);
           $('#plugin_alert span.description').text(d.description);
