@@ -1,8 +1,8 @@
 {
   "name"        : "ExChillusion",
-  "description" : "A neat messenger.",
-  "version"     : "0.0.3",
-  "main"        : "index.html",
+  "description" : "An open-source messenger based on web-technologies.",
+  "version"     : "0.0.4",
+  "main"        : "welcome.html",
   //"js-flags"    : "--use-strict --harmony", // Hooray.
   "window"      : {
     "toolbar"   : true,

@@ -50,6 +50,10 @@ prototype._askBets = function() {
       if(host.state.id != HSTATE_TAKING_BETS)
         return; // TODO:2014-08-23:alex:Let the user know we're not taking bets anymore.
       
+      bet = Number(bet);
+      if(Number.isNaN(bet)) bet = 0;
+      bet = Math.floor(bet); // Don't allow float values for our bets.
+      
       if(bet < 0) return; // This one's so old. Sorry, but this won't work.
       if(bet > user.wealth) return; // Yeah, this isn't legit either.
       
@@ -172,11 +176,14 @@ prototype._solve = function() {
   var host = this;
   setTimeout(function() {
     host.state.players.forEach(function(player) {
-      if(player.hand.isOver) return; // Over!
-      if(player.hand.isBlackjack && !host.dealer.hand.isBlackjack) return player.wealth += player.bet * 2.5; // Blackjack pays 3:2
-      if(player.hand.total == host.dealer.hand.total) player.wealth += player.bet; // Tie.
-      else if(host.dealer.hand.isOver || player.hand.total > host.dealer.hand.total) player.wealth += player.bet * 2; // Win.
-      else; // Lose.
+      if(player.hand.isOver) return; // Over! You get nothing back!
+      if(player.hand.isBlackjack && !host.dealer.hand.isBlackjack) // Blackjack and dealer doesn't have a blackjack
+        return player.wealth += Math.ceil(player.bet * 2.5); // Blackjack pays 3:2, rounded up like in casinos.
+      if(player.hand.total == host.dealer.hand.total) // Tie.
+        player.wealth += player.bet;
+      else if(host.dealer.hand.isOver || player.hand.total > host.dealer.hand.total) // Win.
+        player.wealth += player.bet * 2;
+      else; // Lose. You get nothing back!
     });
     
     setTimeout(function() { host._clear(); }, 2500);

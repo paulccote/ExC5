@@ -1,227 +1,77 @@
-var smileys = [];
-smileys[']:)'] = 'emoticon-0116-evilgrin';
-smileys['&gt;:)'] = 'emoticon-0116-evilgrin';
-smileys['(grin)'] = 'emoticon-0116-evilgrin';
-smileys[':)'] = 'emoticon-0100-smile';
-smileys[':('] = 'emoticon-0101-sadsmile';
-smileys[':D'] = 'emoticon-0102-bigsmile';
-smileys['8-)'] = 'emoticon-0103-cool';
-smileys[':o'] = 'emoticon-0104-surprised';
-smileys[':O'] = 'emoticon-0104-surprised';
-smileys[';)'] = 'emoticon-0105-wink';
-smileys[';('] = 'emoticon-0106-crying';
-smileys[':\'('] = 'emoticon-0106-crying';
-smileys['(sweat)'] = 'emoticon-0107-sweating';
-smileys[':|'] = 'emoticon-0108-speechless';
-smileys['(lorenzo)'] = 'emoticon-0108-speechless';
-smileys[':*'] = 'emoticon-0109-kiss';
-smileys[':P'] = 'emoticon-0110-tongueout';
-smileys[':$'] = 'emoticon-0111-blush';
-smileys['(blush)'] = 'emoticon-0111-blush';
-smileys[':^)'] = 'emoticon-0112-wondering';
-smileys['|-)'] = 'emoticon-0113-sleepy';
-smileys['|-('] = 'emoticon-0114-dull';
-smileys['(involve)'] = 'emoticon-0115-inlove';
-smileys['(talk)'] = 'emoticon-0117-talking';
-smileys['(yawn)'] = 'emoticon-0118-yawn';
-smileys['(puke)'] = 'emoticon-0119-puke';
-smileys['(doh)'] = 'emoticon-0120-doh';
-smileys['&gt;.&lt;'] = 'emoticon-0120-doh';
-smileys[':@'] = 'emoticon-0121-angry';
-smileys['(wasntme)'] = 'emoticon-0122-itwasntme';
-smileys['(party)'] = 'emoticon-0123-party';
-smileys[':s'] = 'emoticon-0124-worried';
-smileys[':S'] = 'emoticon-0124-worried';
-smileys['(mm)'] = 'emoticon-0125-mmm';
-smileys['(nerd)'] = 'emoticon-0126-nerd';
-smileys['(paul1)'] = 'emoticon-0126-nerd';
-smileys[':x'] = 'emoticon-0127-lipssealed';
-smileys[':X'] = 'emoticon-0127-lipssealed';
-smileys['(wave)'] = 'emoticon-0128-hi';
-smileys['(call)'] = 'emoticon-0129-call';
-smileys['(devil)'] = 'emoticon-0130-devil';
-smileys['(angle)'] = 'emoticon-0131-angel';
-smileys['(envy)'] = 'emoticon-0132-envy';
-smileys['(wait)'] = 'emoticon-0133-wait';
-smileys['(bear)'] = 'emoticon-0134-bear';
-smileys['(pedobear)'] = 'emoticon-0134-bear';
-smileys['(makeup)'] = 'emoticon-0135-makeup';
-smileys['(giggle)'] = 'emoticon-0136-giggle';
-smileys['(chuckle)'] = 'emoticon-0136-giggle';
-smileys['(clap)'] = 'emoticon-0137-clapping';
-smileys['(think)'] = 'emoticon-0138-thinking';
-smileys[':?'] = 'emoticon-0138-thinking';
-smileys['(bow)'] = 'emoticon-0139-bow';
-smileys['(paul2)'] = 'emoticon-0130-devil';
-smileys['(rofl)'] = 'emoticon-0140-rofl';
-smileys['(whew)'] = 'emoticon-0141-whew';
-smileys['(gay)'] = 'emoticon-0142-happy';
-smileys['(happy)'] = 'emoticon-0142-happy';
-smileys['(smirk)'] = 'emoticon-0143-smirk';
-smileys['(nod)'] = 'emoticon-0144-nod';
-smileys['(shake)'] = 'emoticon-0145-shake';
-smileys['(punch)'] = 'emoticon-0146-punch';
-smileys['(emo)'] = 'emoticon-0147-emo';
-smileys['(paul3)'] = 'emoticon-0147-emo';
-smileys['(y)'] = 'emoticon-0148-yes';
-smileys['(yes)'] = 'emoticon-0148-yes';
-smileys['(n)'] = 'emoticon-0149-no';
-smileys['(no)'] = 'emoticon-0149-no';
-smileys['(handshake)'] = 'emoticon-0150-handshake';
-//smileys['(skype)'] = 'emoticon-0151-skype';
-smileys['(heart)'] = 'emoticon-0152-heart';
-smileys['<3'] = 'emoticon-0152-heart';
-smileys['(u)'] = 'emoticon-0153-brokenheart';
-smileys['</3'] = 'emoticon-0153-brokenheart';
-smileys['<\\3'] = 'emoticon-0153-brokenheart';
-smileys['(mail)'] = 'emoticon-0154-mail';
-smileys['(flower)'] = 'emoticon-0155-flower';
-smileys['(rain)'] = 'emoticon-0156-rain';
-smileys['(sun)'] = 'emoticon-0157-sun';
-smileys['(time)'] = 'emoticon-0158-time';
-smileys['(music)'] = 'emoticon-0159-music';
-smileys['(movie)'] = 'emoticon-0160-movie';
-smileys['(phone)'] = 'emoticon-0161-phone';
-smileys['(coffee)'] = 'emoticon-0162-coffee';
-smileys['(pi)'] = 'emoticon-0163-pizza';
-smileys['(pizza)'] = 'emoticon-0163-pizza';
-smileys['(cash)'] = 'emoticon-0164-cash';
-smileys['(muscle)'] = 'emoticon-0165-muscle';
-smileys['(cake)'] = 'emoticon-0166-cake';
-smileys['(beer)'] = 'emoticon-0167-beer';
-smileys['(drink)'] = 'emoticon-0168-drink';
-smileys['(dance)'] = 'emoticon-0169-dance';
-smileys['(shuffle)'] = 'emoticon-0169-dance';
-smileys['(ninja)'] = 'emoticon-0170-ninja';
-smileys['(alex)'] = 'emoticon-0189-priidu';
-smileys['(star)'] = 'emoticon-0171-star';
-smileys['(mooning)'] = 'emoticon-0172-mooning';
-smileys['(moon)'] = 'emoticon-0172-mooning';
-smileys['(fu)'] = 'emoticon-0173-middlefinger';
-smileys['(bandit)'] = 'emoticon-0174-bandit';
-smileys['(paul4)'] = 'emoticon-0174-bandit';
-smileys['(drunk)'] = 'emoticon-0175-drunk';
-smileys['(paul5)'] = 'emoticon-0175-drunk';
-smileys['(smoke)'] = 'emoticon-0176-smoke';
-smileys['(toivo)'] = 'emoticon-0177-toivo';
-smileys['(rock)'] = 'emoticon-0178-rock';
-smileys['(headbang)'] = 'emoticon-0179-headbang';
-smileys['(hb)'] = 'emoticon-0179-headbang';
-smileys['(bug)'] = 'emoticon-0180-bug';
-smileys['(feature)'] = 'emoticon-0180-bug';
-smileys['(fubar)'] = 'emoticon-0181-fubar';
-smileys['(poolparty)'] = 'emoticon-0182-poolparty';
-smileys['(pp)'] = 'emoticon-0182-poolparty';
-smileys['(swear)'] = 'emoticon-0183-swear';
-smileys['&gt;:$'] = 'emoticon-0183-swear';
-smileys['(tmi)'] = 'emoticon-0184-tmi';
-smileys['(heidy)'] = 'emoticon-0185-heidy';
-smileys['(myspace)'] = 'emoticon-0186-myspace';
-smileys['(malthe)'] = 'emoticon-0187-malthe';
-smileys['(tauri)'] = 'emoticon-0188-tauri';
-smileys['(priidu)'] = 'emoticon-0189-priidu';
+var input, scrollToBottom = true;
 
-var satisfyPaul = [];
-satisfyPaul["paul"] = "Paul";
-satisfyPaul["alex"] = "Alex | The original";
-satisfyPaul["lorenzo.rota"] = "Lorenzo";
-satisfyPaul["irath96"] = "iRath96";
+// TODO:2014-08-17:alex:Themes
+// TODO:2014-08-17:alex:Better drag and drop support (sources, drag everywhere)
+// TODO:2014-08-17:alex:Favorite colors
+// TODO:2014-08-17:alex:[img]url[/img], [youtube]link[/youtube], [color=abc]text[/color] - learn BBCode.
+// TODO:2014-08-17:alex:Gifs!
+// TODO:2014-08-17:alex:A single /me-message with addpad is misaligned
+// TODO:2014-08-17:alex:The topic-input should support BB.
+// TODO:2014-08-17:alex:multi-lingual package.json
+// TODO:2014-08-17:alex:Profile updates aren't pushed to channels yet.
+// TODO:2014-08-17:alex:Scroll down when images load.
+// TODO:2014-08-17:alex:Fix line-height (for emoticons).
+// TODO:2014-08-24:alex:Support message-editing and chatlogs.
 
-var fileCount = 1;
-var transfers = [];
-
-var CHUNK_SIZE = 65536; // 64KiB / 6 * 8 + 2B is a little much per packet (beside the meta overhead) ...
-
-function Transfer(data, handle) {
-  this.sTime = new Date().getTime();
-  
-  this.id = data.shift();
-  this.type = data.shift();
-  this.name = data.shift();
-  this.size = data.shift();
-  this.cSize = data.shift(); // Chunk Size //
-  this.handle = handle;
-  
-  this.chunks = [];
-  this.onfinish = function() {};
-  
-  this.message = addMessage(this.handle + " <i>Sending</i>", getTimeString(), "0%");
-}
-
-Transfer.prototype.handleChunk = function(data) {
-  data.shift(); // We know our Id...
-  this.chunks[data[0]] = data[1];
-  
-  var b = this.chunks.length * this.cSize;
-  var p = Math.min(b / this.size, 1);
-  var percent = Math.round(p * 1000) / 10 + "%";
-  var bps = b / (new Date().getTime() - this.sTime);
-  this.message.innerHTML = percent + " (" + byte(b) + " / " + byte(this.size) + " - " + byte(bps) + "/s)";
-  
-  if(this.chunks.length * this.cSize >= this.size) this.onfinish(this);
-};
-
-function byte(bytes) {
-  var m = ["B", "KiB", "MiB", "GiB", "TiB"];
-  var mi = 0;
-  while(bytes > 1024) {
-    bytes /= 1024;
-    ++mi;
-    if(mi == m.length) break;
-  }
-  
-  return Math.round(bytes * 10) / 10 + m[mi];
-}
-
-var input;
-function init() {
-  input = document.getElementById("msgField");
-  input.ondrop = function(e) {
-    this.className = '';
-    e.preventDefault();
-    
-    var file = e.dataTransfer.files[0],
-        reader = new FileReader();
-    
-    ExAPI.sendMessage(EncStr(["file", "init", fileCount, file.type, file.fileName, file.fileSize, CHUNK_SIZE]));
-    
-    reader.onload = function(evt) {
-      var n = evt.target;
-      var len = n.result.length;
-      for(var chunk = 0; chunk < len; chunk += CHUNK_SIZE)
-       ExAPI.sendMessage(EncStr(["file", "chunk", fileCount, chunk / CHUNK_SIZE, n.result.substring(chunk, chunk + CHUNK_SIZE)]));
-      ++fileCount;
-    };
-    
-    reader.readAsBinaryString(file);
-    return false;
+window.addEventListener('load', function() {
+  document.querySelector('#topic input').onkeydown = function(e) {
+    if(e.keyCode != 13) return;
+    this.blur();
+    ExAPI.data('topic', this.value);
   };
   
-  input.ondragend = function() { this.className = ''; return false; }; // Does not work ?!
-  input.ondragover = function() { this.className = 'hover'; return false; };
-  
-  input.onkeypress = checkForEnter;
+  /*
+  addMessage('System', getTimeString(), 'Testing something', false);
+  addMessage('System', getTimeString(), 'Testing something', false);
+  addMessage(null, getTimeString(), 'Testing something', false);
+  addMessage('System', getTimeString(), 'Testing something', false);
+  addMessage('System', getTimeString(), 'Testing something', false);
+  addMessage('System2', getTimeString(), 'Testing something', false);
+  addMessage('System', getTimeString(), 'Testing something', false);
+  addMessage('System3', getTimeString(), 'Testing something', false);
+  addMessage('System', getTimeString(), 'Testing something', false);
+  */
   
   ExAPI.init();
   
-  var updateUsers = function() {
-    var e = document.getElementById('users');
-    e.innerHTML = "<b>Users:</b> ";
+  input = document.getElementById("msgField");
+  input.onkeydown = checkForEnter;
+  input.addEventListener('dragover'  , function(e) { e.preventDefault(); return false; });
+  input.addEventListener('dragenter' , function(e) { e.preventDefault(); return false; });
+  input.addEventListener('drop', function(e) {
+    var dt = e.dataTransfer;
+    var file = dt.files[0];
     
-    var spans = [];
-    for(var i = 0; i < ExAPI.channel.participants.length; ++i) {
-      var u = ExAPI.channel.participants[i].username;
-      var span = "<span class=\"" + "user" + "\">"; // ExAPI.users[i].toLowerCase()
-      span += satisfyPaul[u] ? satisfyPaul[u] : u;
-      span += "</span>";
-      
-      spans.push(span);
-    } e.innerHTML += spans.join(", ");
-  };
+    var reader = new FileReader();
+    reader.addEventListener('loadend', function(e) {
+      var img = new Image();
+      img.onload = function() { canvasMagic(img); };
+      img.src = reader.result;
+    });
+    reader.readAsDataURL(file);
+    
+    e.preventDefault();
+    return false;
+  });
   
-  var keyChange = function(evt) {
-    if(evt.username === undefined) evt.username = '(host)';
-    addMessage("System", getTimeString(), "<b>" + evt.username + "</b> set the " + evt.key + " to \"" + convertMessage(evt.value).substring(1) + "\"");
+  var messages = document.getElementById("messages");
+  messages.addEventListener('scroll', function() {
+    scrollToBottom = messages.scrollHeight - messages.scrollTop < $(messages).height() + 50;
+  });
+  
+  window.addEventListener('resize', function() {
+    if(scrollToBottom) messages.scrollTop = messages.scrollHeight;
+  });
+  
+  function keyChange(evt) {
+    if(evt.record.username === undefined) evt.record.username = '(host)';
+    if(evt.key == 'topic')
+      document.querySelector('#topic input').value = evt.record.value;
+    
+    addMessage(
+      "System", getTimeString(),
+      "<b>" + evt.record.username + "</b> set the " + evt.key + " to \"" + convertMessage(evt.record.value) + "\""
+    );
   };
   
   ExAPI.on('configure', function(evt) {
@@ -232,15 +82,20 @@ function init() {
       icon  : { important:false , write:EXROLE_HOST, read:EXROLE_ANYBODY }
     });
     
-    ExAPI.data('topic', 'No topic set.');
+    ExAPI.grid('userGrid', {
+      typing : { important:true, write:EXROLE_SELF, read:EXROLE_USER },
+      speed  : { important:true, write:EXROLE_SELF, read:EXROLE_USER }
+    });
+    
     ExAPI.data('motd', 'Corona: This is the message of the day, the day, the day!');
     
     ExAPI.options({
       public   : true,
       maxUsers : 150,
       commands : {
-        chat : EXROLE_USER,
-        me   : EXROLE_USER
+        image  : EXROLE_USER,
+        chat   : EXROLE_USER,
+        me     : EXROLE_USER
       }
     });
   });
@@ -253,43 +108,42 @@ function init() {
     if(evt.focus) ExAPI.dirty(false);
   });
   
-  ExAPI.on('data', function(evt) {
-    keyChange(evt);
+  ExAPI.on('data', function(evt) { keyChange(evt); });
+  ExAPI.on('udata', function(e) {
+    if(e.key == 'typing') {
+      var typing = Object.findAllKeys(ExAPI.channel.participants, function(p) { return (p.data.typing || {}).value; });
+      displayTyping(typing);
+    }
   });
   
   ExAPI.on("init", function(evt) {
     var m = addMessage("System", getTimeString(), "Welcome to #" + ExAPI.channel.name);
-    for(var k in ExAPI.channel.data)
-      if(ExAPI.channel.data.hasOwnProperty(k))
-        keyChange({ 'key':k, 'value':ExAPI.channel.data[k] });
-    updateUsers();
+    Object.forEach(ExAPI.channel.data, function(k,r) { keyChange({ key:k, record:r }); });
+    updateUserList();
   });
   
   ExAPI.on("join", function(evt) {
     addMessage("System", getTimeString(), "<b>" + evt.username + "</b> has joined the room");
-    updateUsers();
+    updateUserList();
   });
   
   ExAPI.on("leave", function(evt) {
     addMessage("System", getTimeString(), "<b>" + evt.username + "</b> has left the room");
-    updateUsers();
+    updateUserList();
   });
-  
-  // ExAPI.addListener("key", keyChange);
   
   ExAPI.on("push", function(evt) {
     var data = evt.data.text;
     var type = evt.data.cmd;
     
-    var participant = {};
-    for(var i = 0; i < ExAPI.channel.participants.length; ++i)
-      if(ExAPI.channel.participants[i].username == evt.username)
-        participant = ExAPI.channel.participants[i];
-    
-    if(type == "chat" || type == "me") {
-      if(!ExAPI.hasFocus) ExAPI.dirty();
+    var participant = Object.find(ExAPI.channel.participants, function(p) { return p.username == evt.username; });
+    if(type == 'image') {
+      var img = new Image();
+      img.src = evt.data.src;
+      addMessage(evt.username, getTimeString(), img, false, participant);
+    } else if(type == "chat" || type == "me") {
       var m = convertMessage(data);
-      addMessage(evt.username, getTimeString(), m.substring(1) + "&nbsp;", type == "me", participant);
+      addMessage(evt.username, getTimeString(), m, type == "me", participant);
       
       //<img src="http://4.bp.blogspot.com/_7UHICy8Etfo/S-RBByuucrI/AAAAAAAAJ2Y/FS-HEPCLNVw/s1600/HungryCaterpillar.JPG">
     } else if(type == "file") {
@@ -348,27 +202,42 @@ function init() {
       }
     }
   });
+});
+
+function displayTyping(list) {
+  document.querySelector('#typing').textContent = list.length == 0 ? '' : list.join(', ') + '...';
 }
 
-var lastHandle = "";
 var first = true;
 
-function smileyTitle(smiley) {
+function emoticonTitle(smiley) {
   return smiley.split("&gt;").join(">").split("&lt;").join("<").split("&amp;").join("&");
 }
 
+function escapeTitle(text) { return text; } // TODO: Vulnerability
+function escapeHTML(text) {
+  var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;"
+  };
+
+  return String(text).replace(/[&<>]/g, function(s) {
+    return entityMap[s];
+  });
+}
+
 function convertMessage(original) {
-  var m = " " + original.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;');
-  
-  m = m.replace(/#([^ ']+)/, "<a href=\"#\" onclick=\"ExAPI.join('$1');\" title=\"Join '$1'\">#$1</a>");
-  
-  for(var i in smileys) m = m.split(i).join('<img src="emoticons/' + smileys[i] + '.gif" title=\"' + encode(smileyTitle(i)) + '\" />');
+  var m = ' ' + escapeHTML(original);
+  for(var i in emoticons)
+    m = m.split(i).join('<img src="emoticons/' + emoticons[i] +
+                        '.gif" title=\"' + escapeTitle(emoticonTitle(i)) + '\" />');
   m = m.replace(/\(flag:(\w\w)\)/, function(x, flag) {
     flag = flag.toLowerCase();
     var x = (flag.charCodeAt(0) - 96) * 16;
     var y = (flag.charCodeAt(1) - 96) * 11;
     var style = "background-position:-" + x + "px -" + y + "px";
-    return "<div class=\"flag\" title=\"" + encode("(flag:" + flag + ")") + "\" style=\"" + style + "\"></div>";
+    return "<div class=\"flag\" title=\"" + escapeTitle("(flag:" + flag + ")") + "\" style=\"" + style + "\"></div>";
   });
   
   m = m.replace(/\[img src="([^"]+)"\]|\[img\]([^\]]+)\[\/img\]/ig, "<img src=\"$1$2\" class=\"unzoom\" onclick=\"zoom(this, event);\" />");
@@ -383,7 +252,8 @@ function convertMessage(original) {
   m = m.replace(/\[ul\](.*?)\[\/ul\]/ig, "<ul>$1</ul>");
   m = m.replace(/\[li\](.*?)\[\/li\]/ig, "<li>$1</li>");
   
-  m = m.replace(/\[font((\s+[^=]+="[^"]+")*)\](.+)\[\/font\]/ig, function(all, params, x, content) {
+  // Yeah, support a lot more here please.
+  m = m.replace(/\[font((\s+[^=]+?="[^"]+")*)\](.+?)\[\/font\]/ig, function(all, params, x, content) {
     params = params.replace(/\s+([^=]+)="([^"]+)"/ig, function(all, key, value) {
       if(key == "face" || key == "size" || key == "color") return " " + key + "=\"" + value + "\"";
       return "";
@@ -391,55 +261,70 @@ function convertMessage(original) {
     return "<font" + params + ">" + content + "</font>";
   });
   
-  m = m.replace(/([^"])http:\/\/([^ ]+)/ig, "$1<a target=\"blank\" href=\"http://$2\">http://$2</a>");
-  return m.replace(/([^\/])www.([^ ]+)/ig, "$1<a target=\"blank\" href=\"http://www.$2\">www.$2</a>");//.substring(1);
+  // m = m.replace(/#([^ ']+)/, "<a href=\"#\" onclick=\"ExAPI.join('$1');\" title=\"Join '$1'\">#$1</a>");
+  
+  m = m.replace(/([^"])http(s?):\/\/([^ ]+)/ig, "$1<a target=\"blank\" href=\"http$2://$3\">http$2://$3</a>");
+  return m.replace(/([^\/])www\.([^ ]+)/ig, "$1<a target=\"blank\" href=\"http://www.$2\">www.$2</a>").substring(1);
 }
 
-function addMessage(handleText, dateText, messageText, nobr, participant) {
-  ExAPI.blink();
+var lastSender, lastMessage;
+function addMessage(sender, dateText, messageText, nobr, participant) {
+  if(!ExAPI.hasFocus) {
+    ExAPI.dirty(); // Yup.
+    var isText = typeof messageText === 'string'
+    ExAPI.notify({ body:sender + (isText ? ': ' + messageText : ' posted a picture') });
+  }
   
-  var same = lastHandle == handleText;
-  lastHandle = handleText;
+  var same = lastSender == sender;
+  lastSender = sender;
   
   var message = document.createElement("div");
   message.className = same ? "message" : "split message";
+  if(sender == ExAPI.client.username) message.className += ' local';
+  if(nobr) message.className += ' me';
+  
+  if(!same && lastMessage) lastMessage.className += ' addpad';
+  lastMessage = message;
   
   if(!same || nobr) {
     var handle = document.createElement("span");
     handle.className = "handle";
-    handle.innerHTML = (satisfyPaul[handleText] ? satisfyPaul[handleText] : handleText) + "&nbsp;";
-    
+    handle.textContent = sender;
     message.appendChild(handle);
   }
   
   if(!same && participant && participant.picture) {
     var img = new Image();
     img.src = participant.picture;
+    img.className = 'profile-picture';
     img.width = 32;
     img.height= 32;
     message.appendChild(img);
   }
   
-  if(!same && !nobr) message.innerHTML += "<br />";
-  
   var date = document.createElement("span");
   date.className = "date";
-  date.innerHTML = '<span class="invisible">[ ' + handleText + ' - ' + '</span>' + dateText + '<span class="invisible"> ]:&nbsp;</span>';
+  date.innerHTML = '<span class="invisible">[ ' + sender + ' - ' + '</span>' + dateText + '<span class="invisible"> ]:&nbsp;</span>';
   
   message.appendChild(date);
   
-//if(!same && !nobr) message.innerHTML += "<br />";
+  if(!same && !nobr) message.appendChild(document.createElement('br'));
   
   var content = document.createElement("span");
   content.className = "content";
-  content.innerHTML = messageText;
+  
+  if(typeof messageText === 'string')
+    content.innerHTML = messageText;
+  else
+    content.appendChild(messageText);
   
   if(nobr) {
-    content.innerHTML = '<span class="invisible">* ' + handleText + '&nbsp;</span>' + content.innerHTML;
-    content.style.display = "inline";
+    content.innerHTML = '<span class="invisible">* ' + sender + '&nbsp;</span>' + content.innerHTML;
+    content.className += ' me';
   }
   
   message.appendChild(content);
+  message.appendChild(document.createElement('br'));
   
   if(first) {
     message.style.border = "none";
@@ -447,8 +332,8 @@ function addMessage(handleText, dateText, messageText, nobr, participant) {
   }
   
   var messages = document.getElementById("messages");
-  messages.appendChild(message);
-  messages.scrollTop = messages.scrollHeight;
+  messages.insertBefore(message, document.querySelector('#typing'));
+  if(scrollToBottom) messages.scrollTop = messages.scrollHeight;
   
   return content;
 }
@@ -459,10 +344,36 @@ function getTimeString(date) {
   return t(date.getHours()) + ":" + t(date.getMinutes()) + ":" + t(date.getSeconds());
 }
 
+var typingTimeout = false, localTyping = false;
 var bold = false, italic = false, underline = false;
+var lastKeyPress = 0;
+var slidingWindow = [], averageDelta = 0.0;
+
 function checkForEnter(e) {
+  var time = new Date().getTime();
+  if(lastKeyPress + 500 > time) { // Count this as a subsequent keystroke if less than 500ms
+    var delta = time - lastKeyPress;
+    slidingWindow.push(delta);
+    while(slidingWindow.length > 100) slidingWindow.shift();
+  } lastKeyPress = time;
+  
+  var isCharKey = e.keyCode >= 40 && e.keyCode <= 90;
+  if(!localTyping && isCharKey) {
+    localTyping = true;
+    ExAPI.udata(ExAPI.client.username, 'typing', true);
+  }
+  
+  if(typingTimeout) clearTimeout(typingTimeout)
+  typingTimeout = setTimeout(function() {
+    if(!localTyping) return;
+    localTyping = false;
+    ExAPI.udata(ExAPI.client.username, 'typing', false);
+  }, 3000);
+  
   if(e.ctrlKey || e.metaKey) {
-    var key = String.fromCharCode(e.charCode);
+  //var key = String.fromCharCode(e.charCode);
+    var keymap = { 66: 'b', 73: 'i', 85: 'u' };
+    var key = keymap[e.keyCode];
     
     if(this.selectionStart < this.selectionEnd) {
       var start = this.selectionStart;
@@ -492,22 +403,26 @@ function checkForEnter(e) {
         default: return true;
       }
     }
-    /*
-    if(this.value.length < 8192) {
-      var ds = ["[i][/i]", "[b][/b]", "[u][/u]", "[/i][i]", "[/b][b]", "[/u][u]"];
-      for(var i = 0; i < ds.length; ++i) this.value = this.value.split(ds[i]).join("");
-    }
-    */
-    
     return false;
+  } // if(e.ctrlKey || e.metaKey)
+  
+  if(e.which != 13) return true;
+  if(e.altKey) {
+    this.setAttribute('rows', 5);
+    return true;
   }
   
-  if(e.which != 13 || e.altKey) return;
-  if(this.value == '') return;
+  if(this.value == '') return e.preventDefault();
   
   if(bold) this.value += "[/b]";
   if(italic) this.value += "[/i]";
   if(underline) this.value += "[/u]";
+  
+  this.setAttribute('rows', 1);
+  e.preventDefault();
+  
+  localTyping = false;
+  ExAPI.udata(ExAPI.client.username, 'typing', false);
   
   if(this.value[0] == '/') { // Seems like we have a command here ;D
     var command = this.value.split(' ')[0].toLowerCase();
@@ -521,43 +436,75 @@ function checkForEnter(e) {
   if(bold) this.value += "[b]";
   if(italic) this.value += "[i]";
   if(underline) this.value += "[u]";
+  
+  // TODO:2014-08-17:alex:Privacy settings?
+  // Give out our typing info!
+  
+  averageDelta = 0.0;
+  for(var i = 0; i < slidingWindow.length; ++i) averageDelta += slidingWindow[i];
+  averageDelta /= slidingWindow.length * 1000; // from milliseconds to seconds
+  
+  ExAPI.udata(ExAPI.client.username, 'speed', averageDelta);
 }
 
 function handleCommand(command, data) {
   switch(command) {
+    case 'stats': {
+      var list = [];
+      Object.forEach(ExAPI.channel.participants, function(p, k) {
+        var speed = (p.data.speed || {}).value;
+        if(typeof speed !== 'number') return;
+        
+        list.push([ k + ' types at ' + (1 / speed).toFixed(2) + ' keystrokes per second.']);
+      });
+      alert(list.length == 0 ? 'No stats available.' : list.join("\n"));
+    }; break;
     case 'topic': ExAPI.data('topic', data); break;
     case 'motd': ExAPI.data('motd', data); break;
     case 'dirty': ExAPI.dirty(true); break;
     case 'notify': ExAPI.notify({ body:ExAPI.client.username + ' posted /notify' }); break;
     case 'king': ExAPI.data('king', data); break;
-    case 'clear': document.getElementById("messages").innerHTML = ""; first = true; lastHandle = ""; break;
-    case 'me': ExAPI.push({ cmd:'me', text:data }); break; // What about "/me&paul&lorenzo rofl" and what about "/me,", "/me!" ?! [TODO]!!!
-    case 'google': top.location.href = "http://www.google.com/search?q=" + data; break; // wtf...?
-    case 'drop': ExAPI.drop(data); break;
+    case 'clear': document.getElementById("messages").innerHTML = ""; first = true; lastSender = ""; break;
+    // TODO:2014-08-17:alex:A more versatile /me command.
+    case 'me': ExAPI.push({ cmd:'me', text:data }); break;
     default: {
-      alert('There is no such command "/' + command + '"');
+      alert('There is no such command: "/' + command + '"');
     }; return true;
   } return false;
 }
 
-function zoom(img, e) {
-  if(img.className) {
-    img.className = "";
-    img.onmousemove = function(e) {
-      var w = window.innerWidth - 6;
-      var r = (e.pageX - 6) / w;
-      img.style.left = Math.round(-(img.width - w) * r) + "px";
-    };
-    img.onmousemove(e);
-  } else {
-    img.className = "unzoom";
-    img.onmousemove = undefined;
-    img.style.left = "";
-  }
+function updateUserList() {
+  var e = document.getElementById('users');
+  e.innerHTML = "";
+  
+  var spans = [];
+  Object.forEach(ExAPI.channel.participants, function(participant) {
+    var img = new Image();
+    img.src = participant.picture;
+    img.width = 32;
+    img.height = 32;
+    
+    var div = document.createElement('div');
+    div.appendChild(img);
+    div.appendChild(document.createTextNode(participant.username));
+    div.className = 'user';
+    e.appendChild(div);
+  });
 }
 
-function encode(str) {
-  var res = "";
-  for(var i = 0; i < str.length; ++i) res += "&#" + str.charCodeAt(i) + ";";
-  return res;
+function canvasMagic(img) {
+  var output = document.getElementById('output');
+  
+  var canvas = document.createElement('canvas');
+  var ctx = canvas.getContext('2d');
+  
+  var scale = Math.sqrt(2073600 / (img.width * img.height)); // Limit resolution to FullHD
+  if(scale > 1.0) scale = 1.0; // But don't scale up.
+  
+  canvas.width = Math.floor(img.width * scale);
+  canvas.height = Math.floor(img.height * scale);
+  
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  
+  ExAPI.push({ cmd:'image', src:canvas.toDataURL('image/jpeg', 0.84) });
 }

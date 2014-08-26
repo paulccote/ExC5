@@ -24,12 +24,35 @@ h1 {
   font-family: 'Aguafina Script';
 }
 
+div#gear {
+  position: fixed;
+  right: 3px;
+  bottom: 3px;
+  width: 16px;
+  height: 16px;
+  background: url(../assets/gear.png) center center no-repeat;
+  background-size: 16px 16px;
+  padding: 2px;
+  border-radius: 2px;
+  -webkit-transition: .1s ease all;
+  cursor: pointer;
+}
+
+div#gear:hover {
+  background-color: rgba(255, 255, 255, .2);
+}
+
 #plugin_alert .icon {
   padding: 1px;
   background-color: white;
   border-radius: 1px;
   border: 1px solid #e9e9e9;
   border-bottom-color: #b1b1b1;
+}
+
+#plugin_alert span {
+  max-width: 100%;
+  word-wrap: break-word;
 }
 
 #plugin_alert span.url {
@@ -84,7 +107,7 @@ h1 {
   background-color: white;
   color: #333;
   text-shadow: none;
-  border: 1px solid #277e9f;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
   border-radius: 3px;
   overflow: hidden;
 }
