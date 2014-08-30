@@ -44,7 +44,7 @@ scope.view('main', function(element) {
     if(cname === null) return;
 
     debugClient.probe(cname, function(o) {
-      if(o.success) PluginTrust.show(o.summary.uid, o.summary.plugin);
+      if(o.success) PluginTrust.open(o.summary.uid, o.summary.plugin);
       else {
         var plugin = prompt('The channel does not exist. Type a plugin-URL to create it.', 'plugins/blackjack');
         if(plugin !== null) debugClient.create(cname, plugin); // Channel does not exist
