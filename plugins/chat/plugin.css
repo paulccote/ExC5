@@ -13,6 +13,35 @@ input {
   outline: none;
 }
 
+div#drag-notice {
+  z-index: 1000;
+  
+  display: none;
+  opacity: 0;
+  
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .8);
+}
+
+div#drag-notice div {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+div#drag-notice span {
+  color: white;
+  font-size: 4em;
+  opacity: .4;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
 div#topbar {
   position: fixed;
   top: 0px;
@@ -114,6 +143,10 @@ div.message.me {
 
 div.message.addpad, div.message:nth-last-child(2) {
   padding-bottom: 16px;
+}
+
+div.message.me.addpad, div.message.me:nth-last-child(2) {
+  padding-bottom: 32px;
 }
 
 div.message.local {

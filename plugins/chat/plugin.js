@@ -1,7 +1,6 @@
 var input, scrollToBottom = true;
 
 // TODO:2014-08-17:alex:Themes
-// TODO:2014-08-17:alex:Better drag and drop support (sources, drag everywhere)
 // TODO:2014-08-17:alex:Favorite colors
 // TODO:2014-08-17:alex:[img]url[/img], [youtube]link[/youtube], [color=abc]text[/color] - learn BBCode.
 // TODO:2014-08-17:alex:Gifs!
@@ -12,6 +11,7 @@ var input, scrollToBottom = true;
 // TODO:2014-08-17:alex:Scroll down when images load.
 // TODO:2014-08-17:alex:Fix line-height (for emoticons).
 // TODO:2014-08-24:alex:Support message-editing and chatlogs.
+// TODO:2014-08-30:alex:Steal /itunes from Colloquy.
 
 window.addEventListener('load', function() {
   document.querySelector('#topic input').onkeydown = function(e) {
@@ -34,13 +34,37 @@ window.addEventListener('load', function() {
   
   ExAPI.init();
   
+  function __(opacity) {
+    $('#drag-notice').show().stop().animate({ opacity:opacity }, 50, function() {
+      if(opacity == 0.0) $(this).hide();
+    });
+  }
+  
+  function func(op) {
+    return function(e) {
+      if(e.dataTransfer.files[0] == undefined) return;
+      __(op);
+      e.preventDefault();
+      return false;
+    };
+  }
+  
   input = document.getElementById("msgField");
   input.onkeydown = checkForEnter;
-  input.addEventListener('dragover'  , function(e) { e.preventDefault(); return false; });
-  input.addEventListener('dragenter' , function(e) { e.preventDefault(); return false; });
-  input.addEventListener('drop', function(e) {
+  document.body.addEventListener('dragover'  , func(1.0));
+  document.body.addEventListener('dragenter' , func(1.0));
+  document.body.addEventListener('dragleave' , func(0.0));
+  document.body.addEventListener('drop', function(e) {
+    __(0.0);
+    
+    superE = e;
+    
     var dt = e.dataTransfer;
     var file = dt.files[0];
+    
+    // TODO:2014-08-30:alex:Support text-drags here. Maybe other types, too.
+    
+    if(file === undefined) return; // Not a file that was dropped.
     
     var reader = new FileReader();
     reader.addEventListener('loadend', function(e) {
@@ -70,7 +94,8 @@ window.addEventListener('load', function() {
     
     addMessage(
       "System", getTimeString(),
-      "<b>" + evt.record.username + "</b> set the " + evt.key + " to \"" + convertMessage(evt.record.value) + "\""
+      "<b>" + evt.record.username + "</b> set the " + evt.key + " to \"" + convertMessage(evt.record.value) + "\" on " +
+      new Date(evt.record.timestamp)
     );
   };
   
@@ -118,7 +143,7 @@ window.addEventListener('load', function() {
   
   ExAPI.on("init", function(evt) {
     var m = addMessage("System", getTimeString(), "Welcome to #" + ExAPI.channel.name);
-    Object.forEach(ExAPI.channel.data, function(k,r) { keyChange({ key:k, record:r }); });
+    Object.forEach(ExAPI.channel.data, function(r, k) { keyChange({ key:k, record:r }); });
     updateUserList();
   });
   
