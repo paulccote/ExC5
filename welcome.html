@@ -10,10 +10,9 @@
     <script type="text/javascript" src="js/lib/knockout-3.1.0.js"></script>
     <script type="text/javascript" src="js/lib/knockout.validation.js"></script>
     <script type="text/javascript" src="js/lib/sprite.js"></script>
-    <script type="text/javascript" src="js/lib/ui.js"></script>
     
     <script type="text/javascript" src="node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
-    <script type="text/javascript" src="js/node-webkit.js"></script>
+    <!--<script type="text/javascript" src="js/node-webkit.js"></script>-->
     <script type="text/javascript" src="js/common.js"></script>
     
     <script type="text/javascript" src="js/client/client.js"></script>
@@ -30,226 +29,64 @@
     <script type="text/javascript" src="ui/generic/load-screen.js"></script>
     <script type="text/javascript" src="ui/generic/page-engine.js"></script>
     <script type="text/javascript" src="ui/generic/plugin-trust.js"></script>
+    <script type="text/javascript" src="ui/generic/event-emitter.js"></script>
+    <script type="text/javascript" src="ui/generic/queue.js"></script>
+    <script type="text/javascript" src="ui/generic/controller.js"></script>
     
     <script type="text/javascript">
       
-      var viewModel = {
-        username : ko.observable('alex').extend({ minLength:3, required:true }),
-        password : ko.observable('test').extend({ minLength:4, required:true }),
-        host     : ko.observable('http://cappucci.noip.me:8042/').extend({ required:true })
-      };
-      
-      var debugClient;
-      $(window).unload(function() {
-        if(debugClient) debugClient.logout();
-      });
-      
-      $(document).ready(function() {
-        // Preload our UI-content.
-        [ 'settings/profile', 'settings/notifications' ].forEach(function(id) { UI.load(id); });
-        
-        ko.validation.configure({
-          decorateElement: true,
-          errorElementClass: 'error',
-        });
-        
-        viewModel.errors = ko.validation.group(viewModel);
-        ko.applyBindings(viewModel);
-        
-        $('#gear').hide().click(function() {
-          alert("okay?");
-        });
-        
-        var dancer = new Sprite('anim/dancing_anim@2x.png').setFPS(15);
-        $('#about_page').append('<br />').append(dancer.element).append('<br />');
-        
-        $('.page').css('left', '100%').each(function(i, a) {
-          $('#' + a.id.replace('_page', '_btn')).click(function() {
-            $('#select').animate({ left: '-100%' });
-            $('#' + a.id).animate({ left: 0 });
+      var MainContext = new function() {
+        var _this = this;
+        this.stack = [];
+        this.navigate = function(view, loadingMessage, loadingEmoticon) {
+          var job = new Job();
+          LoadScreen.addJob(job, loadingMessage || ('Loading view ' + view.id), loadingEmoticon);
+          view.show(function() {
+            job.finish();
+            
+            if(_this.stack.length > 0) { // Are we showing a view already?
+              // Slide it out (to the left).
+              var prev = _this.stack[_this.stack.length-1];
+              $(prev.element).animate({ left:'-100%' }, function() { $(prev.element).hide(); });
+            }
+            
+            if(_this.stack.length == 0) // Is this our first view? Fade it in.
+              $(view.element).show(); // $(view.element).css('opacity', 0).show().animate({ opacity:1.0 });
+            else // If this is another page, then slide the new one in (from the right)
+              $(view.element).css('left', '100%').show().animate({ left:0 });
+            
+            _this.stack.push(view);
           });
-          
-          var backBtn = document.createElement('span');
-          backBtn.style.marginTop = '20px';
-          backBtn.className = 'button';
-          backBtn.innerHTML = '&laquo; ' + (a.id == 'loggedin_page' ? 'logout' : 'back');
-          backBtn.onclick = function() {
-            if(a.id == 'loggedin_page') debugClient.logout(); // TODO: Ouch!
-            $('#' + a.id).animate({ left: '100%' });
-            $('#select').animate({ left: 0 });
-          };
-          
-          if(a.id != 'host_page') $('#' + a.id).append(backBtn);
-        });
+        };
         
-        $('#host_btn').click(function(e) {
-          new ExHost(8042);
-        });
-        
-        $('#login_btn,#register_btn').click(function(e) {
-          for(var k in viewModel) // revalidate everything
-            if(viewModel[k].__valid__ !== undefined)
-              ko.validation.validateObservable(viewModel[k]);
+        this.back = function() {
+          var view = _this.stack.pop();
           
-          if(viewModel.errors().length > 0) {
-            $('#join_page').effect('shake');
-            viewModel.errors.showAllMessages(true);
-            return;
+          // Slide it to out (to the right)
+          $(view.element).animate({ left:'100%' }, function() { $(view.element).hide(); view.hide(); });
+          
+          if(_this.stack.length > 0) { // Do we have a previous view?
+            // Slide it in (from the left)
+            var next = _this.stack[_this.stack.length-1];
+            $(next.element).css('left', '-100%').show().animate({ left:0 });
           }
-          
-          var register = e.target.id == 'register_btn';
-          
-          $('#join_page input.error').removeClass('error');
-          $('.error').hide();
-          
-          LoadScreen.configureAndShow('#join_page', 'Connecting to server', 'tumbleweed');
-          
-          // Connect...
-          
-          var c = debugClient = new ExClient(viewModel.host());
-          c.socket.on('connect', function() {
-            LoadScreen.setMessage(register ? 'Registering' : 'Logging in');
-            c[register ? 'register' : 'authenticate'](viewModel.username(), viewModel.password());
-          });
-          
-          c.socket.on('connect_error', function(e) {
-            viewModel.host.error('Coult not connect: ' + e);
-            viewModel.host.__valid__(false);
-            
-            LoadScreen.hide('#join_page');
-          });
-          
-          function joinError(register) {
-            var errorset = register ? {
-              username: 'This username exists already.',
-              password: 'This password is horrible.'
-            } : {
-              username: 'This username does not exist.',
-              password: 'This password is wrong.'
-            };
-            
-            return function(field) {
-              $('#join_page').effect('shake');
-              
-              viewModel[field].error(errorset[field]);
-              viewModel[field].__valid__(false);
-              
-              LoadScreen.hide('#join_page');
-            };
-          }
-          
-          c.socket.on('session-error', joinError(false));
-          c.socket.on('register-error', joinError(true));
-          
-          c.socket.on('list', function(list) {
-            listChannels(list); // TODO: Integrate the function into this callback.
-          });
-          
-          c.socket.on('login', function() {
-            LoadScreen.configureAndShow('#join_page', 'Congratulations', 'nod', 10);
-            LoadScreen.hide();
-            
-            $('#loggedin_page').css('opacity', 0.0).css('left', 0).animate({
-              opacity: 1.0
-            });
-            
-            $('#gear').show();
-            
-            $('#beta_btn').click(function(e) {
-              var feature = prompt(
-                "This is the beta-feature section for features that have\n" +
-                "no GUI yet and are likely to change a lot in upcoming\n" +
-                "releases. Please enter the code-phrase below.\n" +
-                "* p2p  * nickname  * picture  * preference  * clear-cache"
-              );
-              if(feature === null) return;
-              
-              switch(feature.toLowerCase()) {
-                case 'preference': {
-                  var key = prompt(
-                    "Preference key?\n" +
-                    "* notifyVisual - value either false or true\n" +
-                    "* notifySound - value either an URL in quotation marks or \"\" for no sound"
-                  );
-                  if(key === null) return;
-                  var current = JSON.stringify(debugClient.preferences[key]);
-                  var value = prompt('New value? Current value is listed as default.', current);
-                  if(value !== null) debugClient.setPreference(key, JSON.parse(value));
-                }; break;
-                case 'p2p': {
-                  var peer = prompt('Username of other peer?');
-                  if(peer !== null) debugClient.requestP2P(peer);
-                }; break;
-                case 'nickname': {
-                  var nickname = prompt('Your new nickname?');
-                  if(nickname !== null) debugClient.socket.emit('profile', 'nickname', nickname);
-                }; break;
-                case 'picture': {
-                  var picture = prompt("Your avatar as 64x64 image/jpeg 0.85 base64-URL?\n" +
-                                       "If that confuses you, copy the code from\n" +
-                                       "http://cappucci.noip.me/agen");
-                  if(picture !== null) debugClient.socket.emit('profile', 'picture', picture);
-                }; break;
-                case 'clear-cache': {
-                  require('nw.gui').App.clearCache(); // for node-webkit
-                  alert("Your cache has been cleared.");
-                }; break;
-              }
-            });
-            
-            $('#list_btn').click(function(e) {
-              c.socket.emit('list');
-            });
-            
-            $('#channel_btn').click(function(e) {
-              var cname = prompt('Which channel do you want to join?', 'bj');
-              if(cname === null) return;
-              
-              c.probe(cname, function(o) {
-                if(o.success) PluginTrust.show(o.summary.uid, o.summary.plugin);
-                else {
-                  var plugin = prompt('The channel does not exist. Type a plugin-URL to create it.', 'plugins/blackjack');
-                  if(plugin !== null) c.create(cname, plugin); // Channel does not exist
-                }
-              });
-            });
-          });
-        });
-      });
+        };
+      }();
       
-      function listChannels(list) {
-        function __(tag, klass, text) {
-          var e = document.createElement(tag);
-          e.className = klass;
-          e.textContent = text;
-          return e;
-        }
-        
-        var cl = $('#channel_list');
-        //cl.html(list.length == 0 ? "You are... FOREVER ALONE!<br />Talking to ARI might cheer you up." : '');
-        cl.text('');
-        
-        for(var i = 0; i < list.length; ++i) {
-          var chan = list[i];
-          var div = __('div', 'channel', '');
-          
-          div.appendChild(__('span', 'title', chan.name));
-          div.appendChild(__('span', 'host', 'by ' + chan.host));
-          div.appendChild(__('span', 'count', chan.count.join(' / ')));
-          div.appendChild(__('br', '', ''));
-          div.appendChild(__('span', 'motd', chan.motd));
-          $(div).dblclick(function(uid) { return function() {
-            debugClient.joinUId(uid);
-          }; }(chan.uid));
-          
-          cl.append(div);
-        }
-      }
+      MainContext.navigate(Controller.view('welcome/main'), 'Brewing coffee...', 'coffee');
       
     </script>
   </head>
   <body>
     <div id="gear"></div>
+    <div id="settings_panel" style="display:none;">
+      <a class="close-btn" onclick="$('#settings_panel').hide();">&times;</a>
+      <ul>
+        <li><a href="ui/settings/profile.html">Profile</a>
+        </li><li><a href="ui/settings/notifications.html">Notifications</a>
+        </li><li><a href="ui/welcome/about.html">About</a></li>
+      </ul>
+    </div>
     <div id="plugin_alert" style="padding-left:90px;min-height:68px;display:none;">
       <img class="icon" width="64" height="64" style="position:absolute;left:10px;" />
       <span class="url">http://cappucci.noim.me/plugins/chat4</span><br />
@@ -262,39 +99,9 @@
         <input id="distrust_btn" class="small" type="button" value="Distrust" />
       </span><br style="clear:both;" />
     </div>
-    <div id="select" class="uibox" style="white-space:normal;">
-      <h1>ExChillusion</h1>
-      <input id="join_btn" type="button" value="Join a network" /><br />
-      <input id="host_btn" type="button" value="Host a network" /><br />
-      <input id="about_btn" type="button" value="About" />
-    </div>
-    <div id="join_page" class="uibox page">
-      <input data-bind="value:host" id="host" type="text" placeholder="Host" /><br />
-      <input data-bind="value:username" id="username" type="text" placeholder="Username" /><br />
-      <input data-bind="value:password" id="password" type="password" placeholder="I can haz passwd?" /><br />
-      <input id="login_btn" type="button" value="Login" style="margin-top:20px;width:158px;" />
-      <input id="register_btn" type="button" value="Register" style="margin-top:20px;width:158px;" />
-      <br />
-    </div>
-    <div id="host_page" class="uibox page"><input type="button" value="Hosting on 8042" />
-      <pre class="debug">Running on port 8042</pre>
-    </div>
-    <div id="about_page" class="uibox page">
-      Yes, we're <b>awesome</b>. We created this awesome application for you.<br />
-      Thank us. Praise us.<br />
-      <br />
-      Don't listen to what the NSA tells you.<br />
-      <em>We're</em> America's real codebreakers. And it's a lot of fun.<br />
-    </div>
-    <div id="loggedin_page" class="uibox page" style="white-space:normal;">
-      <div id="channel_list" class="debug" style="height:160px;">(Will list channels for money)</div><br />
-      <input id="channel_btn" type="button" value="Join a channel" /><br />
-      <input id="list_btn" type="button" value="List channels" /><br />
-      <input id="beta_btn" type="button" value="Beta features" /><br />
-    </div>
-    <div id="loading" class="uibox" style="padding-top:80px;">
-      <!--<img src="images/spinner.gif" width="75" />-->
-      <br /><div></div><span class="status"><!-- Loading message --></span>
+    <div id="loading">
+      <div><!-- Emoticon --></div>
+      <span class="status"><!-- Loading message --></span>
     </div>
     <footer>
       <span>&copy; ExChillusion</span> <span style="opacity:0.7;">&mdash; We own your soul.</span>

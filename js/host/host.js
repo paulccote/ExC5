@@ -17,12 +17,11 @@ function dbResultToArray(r) {
   return a;
 }
 
-var path = require('path');
-
 var debugHost;
 function ExHost(port) {
   debugHost = this;
   
+  var path = require('path');
   var servDDir = path.join(location.pathname, '../db/server.sqlite');
   var serverDb = this.serverDb = openDatabase(servDDir, '1.0', 'ExC4 database', 128 * 1024 * 1024);
   this.prepareServerDb();
