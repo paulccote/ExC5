@@ -13,21 +13,29 @@ jQuery.fn.center = function () {
  * the description and summary.
  */
 var PluginTrust = new function() {
-  var pendingUId, self = this;
+  var pendingUId, pendingPlugin, pendingName, self = this;
   
   window.addEventListener('load', function() {
     $('#distrust_btn').click(function() { self.close(); });
     $('#trust_btn').click(function() {
       self.close();
-      debugClient.joinUId(pendingUId);
+      
+      try { require('nw.gui'); } catch(e) {
+        var specs = 'menubar=no,width=800,height=600'; // TODO:2014-08-31:alex:Center on screen.
+        browserWindows[pendingName] = window.open(pendingPlugin + '/plugin.html?' + Math.random(), 'ExChillusion', specs);
+      }
+      
+      ExClient.instance.joinUId(pendingUId);
     });
     
     // We want the icon to be hidden until it has finished loading.
     $('#plugin_alert img.icon').load(function() { $(this).show(); });
   });
   
-  this.open = function(uid, plugin) {
+  this.open = function(uid, plugin, name) {
     pendingUId = uid;
+    pendingPlugin = plugin;
+    pendingName = name;
     
     $('#plugin_alert span.url').text(plugin);
     $('#plugin_alert').addClass('loading');

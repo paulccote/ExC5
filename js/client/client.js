@@ -73,6 +73,13 @@ function ExClient(hostname) {
   });
   
   //
+  // TODO:2014-08-17:alex:Merge with other settings, new name 'notifyAudio', etc, etc.
+  //
+  
+  this.notifySound = null;
+  return;
+  
+  //
   // P2P stuff
   //
   
@@ -96,12 +103,6 @@ function ExClient(hostname) {
   });
   
   server.bind(this.udpPort);
-  
-  //
-  // TODO:2014-08-17:alex:Merge with other settings, new name 'notifyAudio', etc, etc.
-  //
-  
-  this.notifySound = null;
 }
 
 ExClient.prototype.updateProfile = function(key, value) {
@@ -201,16 +202,24 @@ ExClient.prototype.joinUId = function(uid, cb) { // TODO: Not DRY with .create
   });
 };
 
+var browserWindows = {};
 ExClient.prototype._createChannel = function(summary) {
   // TODO:2014-08-17:alex:Use plugin-information for prefered window-size, etc here.
   
-  var gui = require('nw.gui');
-  var win = gui.Window.open(summary.plugin + '/plugin.html?' + Math.random(), {
-    position : 'center',
-    width    : 800,
-    height   : 600,
-    nodejs   : false
-  });
+  var win;
+  try {
+    var gui = require('nw.gui');
+    win = gui.Window.open(summary.plugin + '/plugin.html?' + Math.random(), {
+      position : 'center',
+      width    : 800,
+      height   : 600,
+      nodejs   : false
+    });
+  } catch(e) {
+    // Not in node-webkit!
+    win = { browser:true, window:browserWindows[summary.name] };
+    win.on = function() {};
+  }
   
   var channel = new ExClient.Channel(this, summary, win);
   

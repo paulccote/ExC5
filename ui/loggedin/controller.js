@@ -19,6 +19,11 @@ function listChannels(list) {
     div.appendChild(__('br', '', ''));
     div.appendChild(__('span', 'motd', chan.motd));
     $(div).dblclick(function(uid) { return function() {
+      try { require('nw.gui'); } catch(e) {
+        var specs = 'menubar=no,width=800,height=600'; // TODO:2014-08-31:alex:Center on screen.
+        browserWindows[chan.name] = window.open(chan.plugin + '/plugin.html?' + Math.random(), 'ExChillusion', specs);
+      }
+      
       ExClient.instance.joinUId(uid);
     }; }(chan.uid));
 
@@ -55,10 +60,18 @@ scope.view('main', function(element) {
     if(cname === null) return;
 
     ExClient.instance.probe(cname, function(o) {
-      if(o.success) PluginTrust.open(o.summary.uid, o.summary.plugin);
+      if(o.success) PluginTrust.open(o.summary.uid, o.summary.plugin, cname);
       else {
+        // TODO:2014-08-31:alex:This needs it's own dialog, because we can't use window.open otherwise.
         var plugin = prompt('The channel does not exist. Type a plugin-URL to create it.', 'plugins/blackjack');
-        if(plugin !== null) ExClient.instance.create(cname, plugin); // Channel does not exist
+        if(plugin !== null) {
+          try { require('nw.gui'); } catch(e) {
+            var specs = 'menubar=no,width=800,height=600'; // TODO:2014-08-31:alex:Center on screen.
+            browserWindows[cname] = window.open(plugin + '/plugin.html?' + Math.random(), 'ExChillusion', specs);
+          }
+          
+          ExClient.instance.create(cname, plugin);
+        }
       }
     });
   });
