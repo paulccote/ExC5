@@ -7,6 +7,12 @@ function Color(type) {
     color.__defineGetter__(key, function()  { return color.value[i]; });
     color.__defineSetter__(key, function(v) { color.value[i] = v;    });
   });
+  
+  this.__defineGetter__('css', function() {
+    // Assume we only support rgb(r,g,b)
+    var c = color.as('rgb');
+    return 'rgb(' + c.value.map(function(i) { return Math.round(i); }).join(',') + ')';
+  });
 }
 
 Color.convert = {};
@@ -21,19 +27,19 @@ Color.convert = {};
   
   Color.convert.f2h = function(v) {
     var len = hues.length - 1; // We do not want the 360 at the end for this.
-    var i = v[0] * len;
+    var i = v[0] * len; while(i < 0) i += len;
     var j = Math.floor(i);
     var k = i - j;
     var a = j % len, b = (j+1) % len;
-    return hues[a] * (1 - k) + (hues[b] + (b == 0 ? 360 : 0)) * k;
+    return [ hues[a] * (1 - k) + (hues[b] + (b == 0 ? 360 : 0)) * k ];
   };
   
   Color.convert.h2f = function(v) {
     var h = v[0] % 360; if(h < 0) h += 360;
     for(var i = 0; i < hues.length-1; ++i) if(hues[i] <= h && h < hues[i+1]) {
       var x = (h - hues[i]) / (hues[i+1] - hues[i]);
-      return i + x;
-    } return 0; // Shold not happen, is hues broken?
+      return [ (i + x) / 360 ];
+    } return [ 0 ]; // Shold not happen, is hues broken?
   };
 })();
 
@@ -75,7 +81,7 @@ Color.convert.hsl2rgb = function(v) {
     return v1;
   }
   
-  var h = v[0], s = v[1], l = v[2];
+  var h = v[0] / 360, s = v[1], l = v[2];
   if(s == 0) return [ l * 255, l * 255, l * 255 ];
   var var_2 = l < 0.5 ? l * (1 + s) : (l + s) - (s * l);
   var var_1 = 2 * l - var_2;
@@ -87,12 +93,12 @@ Color.convert.hsl2rgb = function(v) {
 };
 
 Color.convert.hsl2fsl = function(v) {
-  v[0] = Color.convert.h2f(v);
+  v[0] = Color.convert.h2f(v)[0];
   return v;
 };
 
 Color.convert.fsl2hsl = function(v) {
-  v[0] = Color.convert.f2h(v); // Convert v to hsl
+  v[0] = Color.convert.f2h(v)[0]; // Convert v to hsl
   return v;
 };
 
