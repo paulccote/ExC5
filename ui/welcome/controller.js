@@ -1,6 +1,5 @@
-var debugClient;
 $(window).unload(function() {
-  if(debugClient) debugClient.logout();
+  if(ExClient.hasOwnProperty('instance')) ExClient.instance.logout();
 });
 
 var scope = Controller.scope('welcome');
@@ -31,7 +30,7 @@ scope.view('about', function(element) {
 scope.view('host', function(element) {
 //addBackButton(element);
   this._show = function(cb) {
-    debugHost = new ExHost(8042);
+    ExHost.instance = new ExHost(8042);
     cb();
   };
 });
@@ -49,9 +48,16 @@ scope.view('auth', function(viewElement) {
     decorateElement: true,
     errorElementClass: 'error',
   });
-
+  
+  // We need to add this to the document, because ko.applyBindings
+  // won't detect this otherwise.
+  document.body.appendChild(viewElement);
+  
   viewModel.errors = ko.validation.group(viewModel);
   ko.applyBindings(viewModel);
+  
+  // Clean it up, it's not needed anymore.
+  document.body.removeChild(viewElement);
   
   function createClient(action) {
     var register = action == 'register';
@@ -60,7 +66,7 @@ scope.view('auth', function(viewElement) {
     
     LoadScreen.addJob(connecting, 'Connecting to server', 'tumbleweed');
     
-    var c = debugClient = new ExClient(viewModel.host());
+    var c = ExClient.instance = new ExClient(viewModel.host());
     c.socket.on('connect', function() {
       authAction = new Job();
       LoadScreen.addJob(authAction, register ? 'Registering' : 'Logging in');
@@ -107,8 +113,6 @@ scope.view('auth', function(viewElement) {
       MainContext.navigate(Controller.view('loggedin/main'));
     });
   }
-  
-  $('#settings_panel').tabs().hide();
   
   $('#gear').hide().click(function() {
     $('#settings_panel').show();

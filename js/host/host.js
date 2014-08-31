@@ -37,15 +37,17 @@ function ExHost(port) {
   });
 }
 
-ExHost.prototype.loadData = function(session) {
+ExHost.prototype.loadProfile = function(session, callback) {
+  debugLog('load profile');
   this.sql('SELECT * FROM profile WHERE username = ?;', [ session.user.username ], function(tx, results) {
     var a = dbResultToArray(results);
     for(var i = 0; i < a.length; ++i) session.profile[a[i].key] = JSON.parse(a[i].value);
+    if(callback !== undefined) callback();
   }, this.dbErrorCb);
 };
 
 ExHost.prototype.updateProfile = function(session, key, value) {
-  session.profile[key] = value; // TODO: Vulnerability!
+  session.profile[key] = value; // TODO:2014-08-31:alex:Vulnerability!!
   this.serverDb.transaction(function(tx) {
     tx.executeSql(
       'DELETE FROM profile WHERE username = ? AND key = ?;',

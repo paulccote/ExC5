@@ -21,8 +21,9 @@ var Controller = new function() {
     queue.add(Job.LoadHTML('ui/' + controller + '/view.html', function() {
       var e = mvc.viewElement = document.createElement('div');
       e.innerHTML = this.html;
-      $(e).find('.view').hide().each(function() {
+      $(e).find('.view').each(function() {
         mvc.elements[this.id] = this;
+        this.parentNode.removeChild(this);
 
         // Mangle the id so we have no colliding ids in our document,
         // because that would be "invalid HTML".
@@ -30,7 +31,7 @@ var Controller = new function() {
         this.id = 'ui-' + mvc.id + '-' + this.id;
       });
 
-      document.body.appendChild(e);
+      // document.body.appendChild(e);
     }));
   }
 
@@ -58,8 +59,10 @@ var Controller = new function() {
       // If/when the MVC-content (style.css, controller.js and view.html) for this view has been loaded,
       // we can pass control to the private _show function, which (if supplied) does preparation
       // before calling our callback 'cb´
-
+      
       view._show(cb);
+      if(view._show.length == 0)
+        cb(); // The _show method didn't expect any argument, so assume it's synchronous and fire the callback.
     });
   };
 

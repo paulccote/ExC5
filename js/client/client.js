@@ -12,6 +12,7 @@ function ExClient(hostname) {
   this.password = '';
   this.loggedIn = ko.observable(false);
   
+  this.profile       = null;
   this.participation = {};
   this.database      = null;
   this.preferences   = null; // TODO:2014-08-17:alex:Synchronize preferences with the server.
@@ -24,7 +25,8 @@ function ExClient(hostname) {
     });
 
     this.socket.on('session-error', function() { client.loggedIn(false); });
-    this.socket.on('login', function(state) {
+    this.socket.on('login', function(profile) {
+      client.profile = profile;
       client.loggedIn(true);
       client._initDatabase();
     });
@@ -101,6 +103,11 @@ function ExClient(hostname) {
   
   this.notifySound = null;
 }
+
+ExClient.prototype.updateProfile = function(key, value) {
+  this.profile[key] = value;
+  this.socket.emit('profile', key, value);
+};
 
 ExClient.prototype.notify = function(title, options) {
   if(this.notifySound) this.notifySound.play();

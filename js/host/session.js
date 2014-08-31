@@ -31,8 +31,10 @@ var prototype = (ExHost.Session = function(host, socket) {
     
     var matcher = genHash(salt + session.user.password + session.rndKey);
     
-    if(hash == matcher) session.handleLogin();
-    else {
+    if(hash == matcher) session.host.loadProfile(session, function() {
+      // We need the profile data so we can send it to the user
+      session.handleLogin();
+    }); else {
       session.debug('Failed to authenticate as ' + session.user.username);
       socket.emit('session-error', 'password');
     }
@@ -45,7 +47,7 @@ var prototype = (ExHost.Session = function(host, socket) {
       if(u) return socket.emit('register-error', 'username');
       
       session.user = host.registerUser(username, password);
-      session.handleLogin();
+      session.handleLogin(); // No need to load profile data here, because it would be an empty hash anyway.
     });
   });
   
@@ -53,15 +55,12 @@ var prototype = (ExHost.Session = function(host, socket) {
     session.debug('Closing session');
     Object.forEach(session.participation, function(participation) { participation.leave() });
     delete host.sessions[session.uid];
-    // TODO: Remove session from host.
   });
 }).prototype;
 
 prototype.handleLogin = function() {
-  this.socket.emit('login', true); // TODO:2014-08-17:alex:We could supply a bit more information here.
+  this.socket.emit('login', this.profile);
   this.debug('Logged in as ' + this.user.username);
-  
-  this.host.loadData(this);
   
   var session = this;
   this.socket.on('p2p-req', function(obj, callback) {

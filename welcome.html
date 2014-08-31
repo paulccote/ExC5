@@ -15,6 +15,8 @@
     <script type="text/javascript" src="js/node-webkit.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
     
+    <script type="text/javascript" src="js/api/color.js"></script>
+    
     <script type="text/javascript" src="js/client/client.js"></script>
     <script type="text/javascript" src="js/client/channel.js"></script>
     <script type="text/javascript" src="js/client/channel-storage.js"></script>
@@ -37,12 +39,18 @@
       
       var MainContext = new function() {
         var _this = this;
+        this.busy = false;
         this.stack = [];
         this.navigate = function(view, loadingMessage, loadingEmoticon) {
+          if(_this.busy) return; // We're doing a transition at the moment.
+          
           var job = new Job();
           LoadScreen.addJob(job, loadingMessage || ('Loading view ' + view.id), loadingEmoticon);
           view.show(function() {
             job.finish();
+            
+            if(view.element.parentNode === null) // An orphaned view, add it to document.body!
+              document.body.appendChild(view.element);
             
             if(_this.stack.length > 0) { // Are we showing a view already?
               // Slide it out (to the left).
@@ -52,18 +60,23 @@
             
             if(_this.stack.length == 0) // Is this our first view? Fade it in.
               $(view.element).show(); // $(view.element).css('opacity', 0).show().animate({ opacity:1.0 });
-            else // If this is another page, then slide the new one in (from the right)
-              $(view.element).css('left', '100%').show().animate({ left:0 });
+            else { // If this is another page, then slide the new one in (from the right)
+              _this.busy = true;
+              $(view.element).css('left', '100%').show().animate({ left:0 }, function() { _this.busy = false; });
+            }
             
             _this.stack.push(view);
           });
         };
         
         this.back = function() {
+          if(_this.busy) return; // We're doing a transition at the moment.
+          
           var view = _this.stack.pop();
           
-          // Slide it to out (to the right)
-          $(view.element).animate({ left:'100%' }, function() { $(view.element).hide(); view.hide(); });
+          // Slide it out (to the right)
+          _this.busy = true;
+          $(view.element).animate({ left:'100%' }, function() { $(view.element).hide(); view.hide(); _this.busy = false; });
           
           if(_this.stack.length > 0) { // Do we have a previous view?
             // Slide it in (from the left)
@@ -82,9 +95,9 @@
     <div id="settings_panel" style="display:none;">
       <a class="close-btn" onclick="$('#settings_panel').hide();">&times;</a>
       <ul>
-        <li><a href="ui/settings/profile.html">Profile</a>
-        </li><li><a href="ui/settings/notifications.html">Notifications</a>
-        </li><li><a href="ui/welcome/about.html">About</a></li>
+        <li><a href="settings/profile">Profile</a>
+        </li><li><a href="settings/notifications">Notifications</a>
+        </li><li><a href="welcome/about">About</a></li>
       </ul>
     </div>
     <div id="plugin_alert" style="padding-left:90px;min-height:68px;display:none;">

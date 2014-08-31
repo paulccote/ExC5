@@ -1,0 +1,59 @@
+input[type="range"] {
+  padding: 0;
+}
+
+div#ui-settings-profile {
+  text-align: center;
+}
+
+/*div.color div.circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 16px;
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, .8);
+  display: inline-block;
+  margin: 4px;
+}*/
+
+div.color div.circle {
+  width: 32px;
+  height: 8px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 1px;
+}
+
+div.color div.circle.central {
+  height: 16px;
+}
+
+div.picture {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 10px auto;
+}
+
+div.picture div.drag-overlay {
+  opacity: 0;
+  display: none;
+  
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border-radius: 4px;
+  font-weight: 400;
+  line-height: 108px;
+  font-size: 1.2em;
+  color: rgba(255, 255, 255, .6);
+  background-color: rgba(0, 0, 0, .5);
+}
+
+div.picture img  {
+  width: 100%;
+  height: 100%;
+}
