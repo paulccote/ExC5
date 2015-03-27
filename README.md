@@ -10,12 +10,13 @@ This is an HTML5 messenger based on [node-webkit](https://github.com/rogerwang/n
 * Channel-based, similiar to IRC, but flexible because plugins can be freely chosen for channels
 * A wide variety of plugins is already provided (a chat-plugin or even games like Connect Four or Blackjack)
 * Third-party plugins can be used to host channels, all you need is a host for your HTML-file
+* Runs in browsers
 
 ## Upcoming features
 
-* Support for browsers and mobiles
+* Support for mobile devices where popup windows are not available
 * Support for WebRTC (which allows peer-to-peer connections, video-chat, amongst other features)
-* Several plugins planned (games/pool, utility/whiteboard, entertainment/watch-together, etc.)
+* Several plugins planned (games/pool, utility/whiteboard, entertainment/youtube-together, etc.)
 
 ## Screenshot
 
