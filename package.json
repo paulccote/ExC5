@@ -1,13 +1,29 @@
 {
-  "name"        : "ExChillusion",
-  "description" : "An open-source messenger based on web-technologies.",
-  "version"     : "0.0.4",
-  "main"        : "welcome.html",
-  //"js-flags"    : "--use-strict --harmony", // Hooray.
-  "window"      : {
-    "toolbar"   : true,
-    "width"     : 660,
-    "height"    : 420
-  //"resizable" : false
+  "name": "exchillusion",
+  "version": "0.0.5",
+  "description": "ExChillusion returns",
+  "main": "welcome.html",
+  "single-instance": false,
+  "dependencies": {
+    "nodewebkit": "^0.11.6",
+    "socket.io": "^1.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodewebkit ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulccote/ExC5.git"
+  },
+  "author": "Paul Cote",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paulccote/ExC5/issues"
+  },
+  "homepage": "https://github.com/paulccote/ExC5#readme",
+  "window": {
+    "toolbar": false
   }
 }

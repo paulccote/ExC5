@@ -213,7 +213,8 @@ ExClient.prototype._createChannel = function(summary) {
       position : 'center',
       width    : 800,
       height   : 600,
-      nodejs   : false
+      nodejs   : false,
+      toolbar  : false
     });
   } catch(e) {
     // Not in node-webkit!
