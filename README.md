@@ -15,6 +15,7 @@ This will be a rewrite of ExChillusion, a chat application that allows for plugi
 * Several plugins planned (games/pool, utility/whiteboard, entertainment/youtube-together, etc.)
 * Existing whiteboard utility will be ported to ExC
 * Package Manager
+* New API
 
 ## Screenshot
 
