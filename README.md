@@ -1,22 +1,19 @@
 ## Introduction
 
-This is an HTML5 messenger based on [node-webkit](https://github.com/rogerwang/node-webkit).
+This will be a rewrite of ExChillusion, a chat application that allows for plugin-based channels.
 
 ## Features
-
-* Written in modern HTML5, CSS3 and JS
-* Runs on Linux, OS X and Windows (more coming soon)
-* Supports different kinds of notifications (sound notifications, visual notifications, OS-specific notifications)
 * Channel-based, similiar to IRC, but flexible because plugins can be freely chosen for channels
-* A wide variety of plugins is already provided (a chat-plugin or even games like Connect Four or Blackjack)
-* Third-party plugins can be used to host channels, all you need is a host for your HTML-file
-* Runs in browsers
+* A wide variety of plugins is already provided (a chat plugin and even games like Connect Four, Blackjack, and Chain Reaction)
+* Third-party plugins can be used to host channels, all you need is a host for your HTML file
 
 ## Upcoming features
-
-* Support for mobile devices where popup windows are not available
-* Support for WebRTC (which allows peer-to-peer connections, video-chat, amongst other features)
+* Upgrade from NodeWebkit to Electron
+* Migration to React for UI
+* Modernized UI flow
+* P2P communications with end-to-end encryption
 * Several plugins planned (games/pool, utility/whiteboard, entertainment/youtube-together, etc.)
+* Existing whiteboard utility will be ported to ExC
 
 ## Screenshot
 
